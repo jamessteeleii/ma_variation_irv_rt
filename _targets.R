@@ -101,6 +101,19 @@ list(
   # Check rho_Int:Con assumptions ----
   tar_target(
     rho_assumptions_plot,
-    check_rho_assumptions()
+    plot_rho_assumptions()
+  ),
+  
+  tar_target(
+    rho_assumptions_data,
+    check_rho_assumptions_data(data)
+  ),
+  
+  tar_target(
+    rho_assumptions_data_plot,
+    plot_rho_assumptions_data(rho_assumptions_data)
   )
+  
+  
+  
 )

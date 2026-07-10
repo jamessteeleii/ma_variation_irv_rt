@@ -491,7 +491,7 @@ plot_models <- function(data_prepared, strength_model, hypertrophy_model) {
     }
     
 
-check_rho_assumptions <- function() {
+plot_rho_assumptions <- function() {
   
   SDs <- tibble(
     ratio = c(1, seq(0.33, 3, length.out=99)),
@@ -523,4 +523,145 @@ check_rho_assumptions <- function() {
 
 ## SDir assumptions regarding rho_Int:Con in our dataset ----
 
+check_rho_assumptions_data <- function(data) {
+  
+  # calculate missing pre and post SDs from SEs
+  data$RT_pre_sd <- ifelse(is.na(data$RT_pre_se), data$RT_pre_sd, data$RT_pre_se * sqrt(data$RT_n))
+  data$CON_pre_sd <- ifelse(is.na(data$CON_pre_se), data$CON_pre_sd, data$CON_pre_se * sqrt(data$CON_n))
+  data$RT_post_sd <- ifelse(is.na(data$RT_post_se), data$RT_post_sd, data$RT_post_se * sqrt(data$RT_n))
+  data$CON_post_sd <- ifelse(is.na(data$CON_post_se), data$CON_post_sd, data$CON_post_se * sqrt(data$CON_n))
+  
+  data <- data |>
+    filter(!is.na(RT_post_sd) & !is.na(CON_post_sd)) |>
+    rowwise() |>
+    mutate(
+      sd_ir_estimate = diff_sdir_test(sd1 = RT_post_sd,
+                                      sd2 = CON_post_sd,
+                                      n1 = RT_n,
+                                      n2 = CON_n)$estimate,
+      sdir_rho_xy = (RT_post_sd^2 + CON_post_sd^2 - unname(sd_ir_estimate)^2) / (2 * RT_post_sd * CON_post_sd)
+    )
+}
 
+plot_rho_assumptions_data <- function(rho_assumptions_data) {
+  
+  rho_hist <- rho_assumptions_data |> 
+    ggplot(aes(x=sdir_rho_xy)) +
+    geom_histogram(color="black", linewidth =  .5) +
+    geom_vline(aes(xintercept = median(sdir_rho_xy))) +
+    geom_vline(aes(xintercept = quantile(sdir_rho_xy, .25)), linetype = "dashed") +
+    geom_vline(aes(xintercept = quantile(sdir_rho_xy, .75)), linetype = "dashed") +
+    
+    labs(x = expression("Assumed value of " * rho[{"Int:Con"}])) +
+    theme_classic() +
+    theme(axis.title.y = element_blank(),
+          axis.line.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank())
+  
+  return(rho_hist)
+  
+}
+
+## Comparing to rho_Pre:Post ----
+
+get_pre_post_rho <- function(data) {
+  
+  # calculate missing pre and post SDs from SEs
+  data$RT_pre_sd <- ifelse(is.na(data$RT_pre_se), data$RT_pre_sd, data$RT_pre_se * sqrt(data$RT_n))
+  data$CON_pre_sd <- ifelse(is.na(data$CON_pre_se), data$CON_pre_sd, data$CON_pre_se * sqrt(data$CON_n))
+  data$RT_post_sd <- ifelse(is.na(data$RT_post_se), data$RT_post_sd, data$RT_post_se * sqrt(data$RT_n))
+  data$CON_post_sd <- ifelse(is.na(data$CON_post_se), data$CON_post_sd, data$CON_post_se * sqrt(data$CON_n))
+  
+  # # convert p to t (Change scores)
+  # data$RT_delta_t_value <- replmiss(data$RT_delta_t_value, with(data, qt(RT_delta_p_value/2, df=RT_n-1, lower.tail=FALSE)))
+  # data$CON_delta_t_value <- replmiss(data$CON_delta_t_value, with(data, qt(CON_delta_p_value/2, df=CON_n-1, lower.tail=FALSE)))
+  # 
+  # # convert t to SE (Change scores)
+  # data$RT_delta_se <- replmiss(data$RT_delta_se, with(data, ifelse(is.na(RT_delta_m), 
+  #                                                                  (RT_post_m - RT_pre_m)/RT_delta_t_value, RT_delta_m/RT_delta_t_value)))
+  # data$CON_delta_se <- replmiss(data$CON_delta_se, with(data, ifelse(is.na(CON_delta_m), 
+  #                                                                    (CON_post_m - CON_pre_m)/CON_delta_t_value, CON_delta_m/CON_delta_t_value)))
+  # make positive
+  data$RT_delta_se <- ifelse(data$RT_delta_se < 0, data$RT_delta_se * -1, data$RT_delta_se)
+  data$CON_delta_se <- ifelse(data$CON_delta_se < 0, data$CON_delta_se * -1, data$CON_delta_se)
+  
+  # convert CI to SE (Change scores)
+  data$RT_delta_se <- replmiss(data$RT_delta_se, with(data, (RT_delta_CI_upper - RT_delta_CI_lower)/3.92))
+  data$CON_delta_se <- replmiss(data$CON_delta_se, with(data, (CON_delta_CI_upper - CON_delta_CI_lower)/3.92))
+  
+  # convert SE to SD (Change scores)
+  data$RT_delta_sd <- replmiss(data$RT_delta_sd, with(data, RT_delta_se * sqrt(RT_n)))
+  data$CON_delta_sd <- replmiss(data$CON_delta_sd, with(data, CON_delta_se * sqrt(CON_n)))
+  
+  # calculate pre-post correlation coefficient for those with pre, post, and delta SDs
+  data$RT_ri <- (data$RT_pre_sd^2 + data$RT_post_sd^2 - data$RT_delta_sd^2)/(2 * data$RT_pre_sd * data$RT_post_sd)
+  data$CON_ri <- (data$CON_pre_sd^2 + data$CON_post_sd^2 - data$CON_delta_sd^2)/(2 * data$CON_pre_sd * data$CON_post_sd)
+  
+  # remove values outside the range of -1 to +1 as they are likely due to misreporting or miscalculations in original studies
+  data$RT_ri <- ifelse(between(data$RT_ri,-1,1) == FALSE, NA, data$RT_ri)
+  data$CON_ri <- ifelse(between(data$CON_ri,-1,1) == FALSE, NA, data$CON_ri)
+  
+  # convert using Fishers r to z
+  data <- escalc(measure = "ZCOR", ri = RT_ri, ni = RT_n, data = data,
+                 var.names = c("RT_yi", "RT_vi"))
+  
+  # convert using Fishers r to z
+  data <- escalc(measure = "ZCOR", ri = CON_ri, ni = CON_n, data = data,
+                 var.names = c("CON_yi", "CON_vi"))
+  
+  # get meta-analytic estimate for diff in correlations
+  data$diff_yi <- data$RT_yi - data$CON_yi
+  data$diff_vi <- data$RT_vi + data$CON_vi
+  
+  # get meta-analytic estimate for diff between arms
+  Meta_diff_ri <- rma.mv(diff_yi, V=diff_vi, data=data,
+                       slab=paste(label),
+                       random = list(~ 1 | study, ~ 1 | arm, ~ 1 | es), method="REML", test="t",
+                       mods = ~ 0 + outcome,
+                       control=list(optimizer="optim", optmethod="Nelder-Mead"))
+  
+  RobuEstMeta_diff_ri <- robust(Meta_diff_ri, data$study)
+  
+  RobuEstMeta_diff_ri
+  
+  
+  # get meta-analytic estimate for RT arms
+  Meta_RT_ri <- rma.mv(RT_yi, V=RT_vi, data=data,
+                       slab=paste(label),
+                       random = list(~ 1 | study, ~ 1 | arm, ~ 1 | es), method="REML", test="t",
+                       mods = ~ 0 + outcome,
+                       control=list(optimizer="optim", optmethod="Nelder-Mead"))
+  
+  RobuEstMeta_RT_ri <- robust(Meta_RT_ri, data$study)
+  
+  z2r_RT <- psych::fisherz2r(RobuEstMeta_RT_ri$b)
+  z2r_RT_lower <- psych::fisherz2r(RobuEstMeta_RT_ri$ci.lb)
+  z2r_RT_upper <- psych::fisherz2r(RobuEstMeta_RT_ri$ci.ub)
+  
+  # get meta-analytic estimate for CON arms
+  Meta_CON_ri <- rma.mv(CON_yi, V=CON_vi, data=data,
+                        slab=paste(label),
+                        random = list(~ 1 | study, ~ 1 | arm, ~ 1 | es), method="REML", test="t",
+                        mods = ~ 0 + outcome,
+                        control=list(optimizer="optim", optmethod="Nelder-Mead"))
+  
+  RobuEstMeta_CON_ri <- robust(Meta_CON_ri, data$study)
+  
+  z2r_CON <- psych::fisherz2r(RobuEstMeta_CON_ri$b[1])
+  z2r_CON_lower <- psych::fisherz2r(RobuEstMeta_CON_ri$ci.lb)
+  z2r_CON_upper <- psych::fisherz2r(RobuEstMeta_CON_ri$ci.ub)
+  
+  # combine pre-post cors
+  pre_post_cors <- tibble(
+    group = c("Intervention","Intervention","Control","Control"),
+    outcome = c("Hypertrophy", "Strength", "Hypertrophy", "Strength"),
+    cor = psych::fisherz2r(c(RobuEstMeta_RT_ri$b, RobuEstMeta_CON_ri$b)),
+    ci.lb = psych::fisherz2r(c(RobuEstMeta_RT_ri$ci.lb, RobuEstMeta_CON_ri$ci.lb)),
+    ci.ub = psych::fisherz2r(c(RobuEstMeta_RT_ri$ci.ub, RobuEstMeta_CON_ri$ci.ub))
+  )
+  
+  
+  pre_post_cors
+  
+}
