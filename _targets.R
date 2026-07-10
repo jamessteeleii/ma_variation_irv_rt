@@ -10,15 +10,11 @@ library(targets)
 # Set target options:
 tar_option_set(
   packages = c(
-    # "tidyverse",
-    # "here",
-    # "metafor",
-    # "brms",
-    # "marginaleffects",
-    # "bayestestR",
-    # "tidybayes",
-    # "broom.mixed",
-    # "patchwork"
+    "tidyverse",
+    "here",
+    "metafor",
+    "bayestestR",
+    "patchwork"
   ), # Packages that your targets need for their tasks.
   memory = "transient",
   format = "qs",  # Optionally set the default storage format. qs is fast.
@@ -59,18 +55,47 @@ tar_option_set(
 )
 
 # Run the R scripts in the R/ folder with your custom functions:
-tar_source()
+tar_source("R/functions/.")
 # tar_source("other_functions.R") # Source other scripts as needed.
 
 # Replace the target list below with your own:
 list(
+  
+  # Read and prepare data ----
+  
+  # read data from Steele et al. (2023) repository
   tar_target(
-    name = data,
-    command = tibble(x = rnorm(100), y = rnorm(100))
-    # format = "qs" # Efficient storage for general data objects.
+    data,
+    readr::read_csv(url("https://github.com/jamessteeleii/Meta-Analysis-of-Variation-in-Resistance-Training/raw/refs/heads/main/data/Polito%20et%20al.%20RT%20Extracted%20Data.csv"))
   ),
+  
+  # prepare data
   tar_target(
-    name = model,
-    command = coefficients(lm(y ~ x, data = data))
+    data_prepared,
+    prepare_data(data)
+  ),
+  
+  # Mean variance relationship ----
+  tar_target(
+    mean_var_plot,
+    plot_mean_variance(data_prepared)
+  ),
+  
+  # Fit models ----
+  tar_target(
+    strength_model,
+    fit_mean_var_meta(data_prepared, "strength")
+  ),
+  
+  tar_target(
+    hypertrophy_model,
+    fit_mean_var_meta(data_prepared, "hypertrophy")
+  ),
+  
+  # Plot models ----
+  tar_target(
+    models_plot,
+    plot_models(data_prepared, strength_model, hypertrophy_model)
   )
+  
 )
