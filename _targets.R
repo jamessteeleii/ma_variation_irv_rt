@@ -96,6 +96,11 @@ list(
   tar_target(
     models_plot,
     plot_models(data_prepared, strength_model, hypertrophy_model)
-  )
+  ),
   
+  # Check rho_Int:Con assumptions ----
+  tar_target(
+    rho_assumptions_plot,
+    check_rho_assumptions()
+  )
 )

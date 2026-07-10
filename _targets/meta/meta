@@ -2,10 +2,18 @@ name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iterat
 data|stem|1c6e8fdda018ea44|89ecebe075726fa4|2c530c1562a7fbd1|33550471||t20644.5631353186s|s48468b|48468|qs|local|vector|||2.54|package 'ggplot2' was built under R version 4.5.3. package 'purrr' was built under R version 4.5.3. package 'dplyr' was built under R version 4.5.3. package 'metafor' was built under R version 4.5.3. package 'metadat' was built under R version 4.5.3. package 'bayestestR' was built under R version 4.5.3|
 data_prepared|stem|82baa39484cde28f|fa5ec5353d2d080d|c5c6198630e712be|2090539961||t20644.5631389304s|s34171b|34171|qs|local|vector|||0.08||
 mean_var_plot|stem|37b6df36ba9a97d9|0db4eaf826d339d3|c8ead1e2d6469455|754171387||t20644.5767024765s|s828951b|828951|qs|local|vector|||0.23||
-plot_mean_variance|function|ccfb650521a8cc61
-plot_models|function|9e6c1d4af4afd8ec
-prepare_data|function|ebf950e0df0460f6
-fit_mean_var_meta|function|6b0f4b01fd03f9a3
 hypertrophy_model|stem|403825e8d4c1636f|907280513217fce3|fda2cf606a35f19d|713020047||t20644.5773891462s|s478746b|478746|qs|local|vector|||31.61||
 strength_model|stem|fe88789646d03946|12bbed0c4587aff1|fda2cf606a35f19d|-828964243||t20644.577540782s|s383718b|383718|qs|local|vector|||12.85||
 models_plot|stem|27b9ece7c0186c1d|674faed5d4a32132|be234ca917628408|-1745638733||t20644.5775536022s|s2478202b|2478202|qs|local|vector|||0.27||
+plot_mean_variance|function|ccfb650521a8cc61
+bootstrap_sigma_d|function|e7a57f47b3c9da52
+p_from_z|function|a47bd76bdcdfc529
+estimate_sigma_d|function|fb1a3fa12dba5f65
+plot_models|function|9e6c1d4af4afd8ec
+prepare_data|function|ebf950e0df0460f6
+fit_mean_var_meta|function|6b0f4b01fd03f9a3
+diff_sdir_test|function|f9c16d737bc4cbf6
+estimate_p_minus|function|936d9c0a1b789d57
+check_rho_assumptions|function|3013422153874823
+sensitivity_analysis|function|b217d62d2d844b89
+rho_assumptions_plot|stem|15c41d72e47d155c|d97fb7017bf78b0b|d23041bf3f0d0e18|-1802976601||t20644.5829143802s|s224377b|224377|qs|local|vector|||1.67|package 'ggplot2' was built under R version 4.5.3. package 'purrr' was built under R version 4.5.3. package 'dplyr' was built under R version 4.5.3. package 'metafor' was built under R version 4.5.3. package 'metadat' was built under R version 4.5.3. package 'bayestestR' was built under R version 4.5.3|
