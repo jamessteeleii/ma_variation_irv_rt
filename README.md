@@ -6,7 +6,7 @@ Resistance training studies consistently demonstrate substantial variation in ob
 # Citation
 Please cite as: 
 
-> Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons in a large dataset of randomised controlled trials. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.984](https://doi.org/10.51224/SportRxiv.984).
+> Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons in a large dataset of randomised controlled trials. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.783](https://doi.org/10.51224/SportRxiv.783).
 
 # Supplementary materials
 Any supplementary materials including analyses and plots are available [here](https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary).
