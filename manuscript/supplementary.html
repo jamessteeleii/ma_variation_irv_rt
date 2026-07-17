@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="James Steele">
+<meta name="dcterms.date" content="2026-07-17">
 
-<title>Supplementary</title>
+<title>Supplementary Materials</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,7 +25,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="supplementary_files/libs/clipboard/clipboard.min.js"></script>
@@ -70,22 +92,56 @@ window.Quarto = {
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#assumed-values-of-rho_intcon" id="toc-assumed-values-of-rho_intcon" class="nav-link active" data-scroll-target="#assumed-values-of-rho_intcon"><span class="header-section-number">1</span> Assumed values of <span class="math inline">\(\rho_{Int:Con}\)</span></a></li>
+  <li><a href="#mean-variance-relationship" id="toc-mean-variance-relationship" class="nav-link" data-scroll-target="#mean-variance-relationship"><span class="header-section-number">2</span> Mean-variance relationship</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Supplementary</h1>
+<h1 class="title">Supplementary Materials</h1>
 </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliations</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">James Steele <a href="mailto:james@steele-research.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> <a href="https://orcid.org/0000-0002-8003-0757" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            Steele Research Limited, Eastleigh, Hampshire, UK
+          </p>
+        <p class="affiliation">
+            MacroFactor, Stronger by Science Technologies LLC, Raleigh, North Carolina, USA
+          </p>
+        <p class="affiliation">
+            School of Health and Biomedical Sciences, Royal Melbourne Institute of Technology, Melbourne, VIC, Australia
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 17, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -95,9 +151,13 @@ window.Quarto = {
 </header>
 
 
-<section id="assumed-values-of-rho_intcon" class="level1">
-<h1>Assumed values of <span class="math inline">\(\rho_{Int:Con}\)</span></h1>
-<p>As shown by Caldwell et al.&nbsp;(2025), the assumed value of <span class="math inline">\(\rho_{Int:Con}\)</span> is dependent upon the ratio between the observed standard deviations in the intervention and control conditions in any variance comparisons performed. This is visualised in <a href="#fig-assumed-rho" class="quarto-xref">Figure&nbsp;1</a>.</p>
+<p>This supplementary material accompanies the preprint:</p>
+<blockquote class="blockquote">
+<p>Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons. sportrxiv DOI: <a href="https://doi.org/10.51224/SportRxiv.????">https://doi.org/10.51224/SportRxiv.????</a>. Address for correspondence: james@steele-research.com</p>
+</blockquote>
+<section id="assumed-values-of-rho_intcon" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Assumed values of <span class="math inline">\(\rho_{Int:Con}\)</span></h1>
+<p>As shown by Caldwell et al. <span class="citation" data-cites="caldwellConcernsRegardingStandard2025">(<a href="#ref-caldwellConcernsRegardingStandard2025" role="doc-biblioref">2025</a>)</span>, the assumed value of <span class="math inline">\(\rho_{Int:Con}\)</span> is dependent upon the ratio between the observed standard deviations in the intervention and control conditions in any variance comparisons performed. This is visualised in <a href="#fig-assumed-rho" class="quarto-xref">Figure&nbsp;1</a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-assumed-rho" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
@@ -113,8 +173,8 @@ Figure&nbsp;1: The relationship between <span class="math inline">\(\rho_{Int:Co
 </div>
 </div>
 </section>
-<section id="mean-variance-relationship" class="level1">
-<h1>Mean-variance relationship</h1>
+<section id="mean-variance-relationship" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Mean-variance relationship</h1>
 <p>This relationship between means and standard deviations on both the raw and log transformed scales for the present dataset is visualised in <a href="#fig-mean-var" class="quarto-xref">Figure&nbsp;2</a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -130,9 +190,14 @@ Figure&nbsp;2: Scatter plots of raw mean and standard deviation of post-interven
 </div>
 </div>
 </div>
+
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-caldwellConcernsRegardingStandard2025" class="csl-entry" role="listitem">
+Caldwell, A. R., Allison, D. B., Brown, A. W., Gadbury, G. L., Mokalla, T. R., Sayer, R. D., &amp; Vigotsky, A. D. (2025). Concerns regarding the standard deviation of individual responses for assessing treatment response heterogeneity. <em>Journal of Applied Physiology</em>, <em>139</em>(5), 1220–1227. <a href="https://doi.org/10.1152/japplphysiol.00485.2025">https://doi.org/10.1152/japplphysiol.00485.2025</a>
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
