@@ -1,0 +1,44 @@
+---
+title: "Supplementary"
+format: html
+execute: 
+  echo: false
+  message: false
+  warning: false
+---
+```{r}
+#| include: false
+
+targets::tar_config_set(store = here::here('_targets'))
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+options(knitr.kable.NA = '')
+
+library(tidyverse)
+
+```
+
+# Assumed values of $\rho_{Int:Con}$
+As shown by Caldwell et al. (2025), the assumed value of $\rho_{Int:Con}$ is dependent upon the ratio between the observed standard deviations in the intervention and control conditions in any variance comparisons performed. This is visualised in @fig-assumed-rho.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+targets::tar_load(rho_assumptions_plot)
+
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-assumed-rho
+#| fig-width: 10
+#| fig-height: 5
+#| fig-cap: The relationship between $\rho_{Int:Con}$ and the ratio between the observed standard deviations in the intervention and control conditions
+
+rho_assumptions_plot
+
+```
