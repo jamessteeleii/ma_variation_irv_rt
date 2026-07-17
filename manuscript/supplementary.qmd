@@ -1,8 +1,27 @@
 ---
-title: "Supplementary"
+title: Supplementary Materials
+date: last-modified
+date-format: long
 format: html
+toc: true
+number-sections: true
+author:
+  - name: James Steele
+    affil-id: 1,2,3
+    orcid: 0000-0002-8003-0757
+    corresponding: true
+    email: james@steele-research.com
+    affiliations:
+      - id: 1
+        name: Steele Research Limited, Eastleigh, Hampshire, UK
+      - id: 2
+        name: MacroFactor, Stronger by Science Technologies LLC, Raleigh, North Carolina, USA
+      - id: 3
+        name: School of Health and Biomedical Sciences, Royal Melbourne Institute of Technology, Melbourne, VIC, Australia
+bibliography: 
+  references.bib
+csl: apa.csl
 execute: 
-  echo: false
   message: false
   warning: false
 ---
@@ -17,8 +36,12 @@ library(tidyverse)
 
 ```
 
+This supplementary material accompanies the preprint: 
+
+> Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.????](https://doi.org/10.51224/SportRxiv.????). Address for correspondence: james@steele-research.com
+
 # Assumed values of $\rho_{Int:Con}$
-As shown by Caldwell et al. (2025), the assumed value of $\rho_{Int:Con}$ is dependent upon the ratio between the observed standard deviations in the intervention and control conditions in any variance comparisons performed. This is visualised in @fig-assumed-rho.
+As shown by Caldwell et al. [-@caldwellConcernsRegardingStandard2025], the assumed value of $\rho_{Int:Con}$ is dependent upon the ratio between the observed standard deviations in the intervention and control conditions in any variance comparisons performed. This is visualised in @fig-assumed-rho.
 
 ```{r}
 #| message: false
@@ -40,5 +63,31 @@ targets::tar_load(rho_assumptions_plot)
 #| fig-cap: The relationship between $\rho_{Int:Con}$ and the ratio between the observed standard deviations in the intervention and control conditions
 
 rho_assumptions_plot
+
+```
+
+# Mean-variance relationship
+This relationship between means and standard deviations on both the raw and log transformed scales for the present dataset is visualised in @fig-mean-var.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+targets::tar_load(mean_var_plot)
+
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-mean-var
+#| fig-width: 10
+#| fig-height: 7.5
+#| fig-cap: Scatter plots of raw mean and standard deviation of post-intervention scores for (a) strength outcomes and (b) hypertrophy outcomes, and of the log mean and log standard deviation of post-intervention scores for (c) strength outcomes and (d) hypertrophy outcomes.
+
+mean_var_plot
 
 ```

@@ -3,6 +3,9 @@
 ## Abstract
 TO WRITE
 
+# Supplementary materials
+Any supplementary materials including analyses and plots are available [here](https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary).
+
 ## Reproducibility
 This repository contains the necessary files and code to reproduce the analyses, figures, and the manuscript. 
 
