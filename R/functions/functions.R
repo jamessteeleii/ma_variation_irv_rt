@@ -563,6 +563,141 @@ plot_rho_assumptions_data <- function(rho_assumptions_data) {
   
 }
 
+## Pre-post as unbiased estimator of intervention effect ----
+get_between_within_ates <- function(data) {
+  
+  # filter to only untrained participants and between participant RCTs
+  data <- data |>
+    filter(train_status == "untrained") |>
+    filter(study_design == "between")
+  
+  # calculate missing pre and post SDs from SEs
+  data$RT_pre_sd <- ifelse(is.na(data$RT_pre_se), data$RT_pre_sd, data$RT_pre_se * sqrt(data$RT_n))
+  data$CON_pre_sd <- ifelse(is.na(data$CON_pre_se), data$CON_pre_sd, data$CON_pre_se * sqrt(data$CON_n))
+  data$RT_post_sd <- ifelse(is.na(data$RT_post_se), data$RT_post_sd, data$RT_post_se * sqrt(data$RT_n))
+  data$CON_post_sd <- ifelse(is.na(data$CON_post_se), data$CON_post_sd, data$CON_post_se * sqrt(data$CON_n))
+  
+  # # convert p to t (Change scores)
+  # data$RT_delta_t_value <- replmiss(data$RT_delta_t_value, with(data, qt(RT_delta_p_value/2, df=RT_n-1, lower.tail=FALSE)))
+  # data$CON_delta_t_value <- replmiss(data$CON_delta_t_value, with(data, qt(CON_delta_p_value/2, df=CON_n-1, lower.tail=FALSE)))
+  # 
+  # # convert t to SE (Change scores)
+  # data$RT_delta_se <- replmiss(data$RT_delta_se, with(data, ifelse(is.na(RT_delta_m), 
+  #                                                                  (RT_post_m - RT_pre_m)/RT_delta_t_value, RT_delta_m/RT_delta_t_value)))
+  # data$CON_delta_se <- replmiss(data$CON_delta_se, with(data, ifelse(is.na(CON_delta_m), 
+  #                                                                    (CON_post_m - CON_pre_m)/CON_delta_t_value, CON_delta_m/CON_delta_t_value)))
+  # make positive
+  data$RT_delta_se <- ifelse(data$RT_delta_se < 0, data$RT_delta_se * -1, data$RT_delta_se)
+  data$CON_delta_se <- ifelse(data$CON_delta_se < 0, data$CON_delta_se * -1, data$CON_delta_se)
+  
+  # convert CI to SE (Change scores)
+  data$RT_delta_se <- replmiss(data$RT_delta_se, with(data, (RT_delta_CI_upper - RT_delta_CI_lower)/3.92))
+  data$CON_delta_se <- replmiss(data$CON_delta_se, with(data, (CON_delta_CI_upper - CON_delta_CI_lower)/3.92))
+  
+  # convert SE to SD (Change scores)
+  data$RT_delta_sd <- replmiss(data$RT_delta_sd, with(data, RT_delta_se * sqrt(RT_n)))
+  data$CON_delta_sd <- replmiss(data$CON_delta_sd, with(data, CON_delta_se * sqrt(CON_n)))
+  
+  # calculate pre-post correlation coefficient for those with pre, post, and delta SDs
+  data$RT_ri <- (data$RT_pre_sd^2 + data$RT_post_sd^2 - data$RT_delta_sd^2)/(2 * data$RT_pre_sd * data$RT_post_sd)
+  data$CON_ri <- (data$CON_pre_sd^2 + data$CON_post_sd^2 - data$CON_delta_sd^2)/(2 * data$CON_pre_sd * data$CON_post_sd)
+  
+  # remove values outside the range of -1 to +1 as they are likely due to misreporting or miscalculations in original studies
+  data$RT_ri <- ifelse(between(data$RT_ri,-1,1) == FALSE, NA, data$RT_ri)
+  data$CON_ri <- ifelse(between(data$CON_ri,-1,1) == FALSE, NA, data$CON_ri)
+  
+  # convert using Fishers r to z
+  data <- escalc(measure = "ZCOR", ri = RT_ri, ni = RT_n, data = data,
+                 var.names = c("RT_yi", "RT_vi"))
+  
+  # convert using Fishers r to z
+  data <- escalc(measure = "ZCOR", ri = CON_ri, ni = CON_n, data = data,
+                 var.names = c("CON_yi", "CON_vi"))
+  
+  
+  # get meta-analytic estimate for RT arms
+  Meta_RT_ri <- rma.mv(RT_yi, V=RT_vi, data=data,
+                       slab=paste(label),
+                       random = list(~ 1 | study, ~ 1 | arm, ~ 1 | es), method="REML", test="t",
+                       mods = ~ 0 + outcome,
+                       control=list(optimizer="optim", optmethod="Nelder-Mead"))
+  
+  RobuEstMeta_RT_ri <- robust(Meta_RT_ri, data$study)
+  
+  z2r_RT <- psych::fisherz2r(RobuEstMeta_RT_ri$b)
+  z2r_RT_lower <- psych::fisherz2r(RobuEstMeta_RT_ri$ci.lb)
+  z2r_RT_upper <- psych::fisherz2r(RobuEstMeta_RT_ri$ci.ub)
+  
+  # get meta-analytic estimate for CON arms
+  Meta_CON_ri <- rma.mv(CON_yi, V=CON_vi, data=data,
+                        slab=paste(label),
+                        random = list(~ 1 | study, ~ 1 | arm, ~ 1 | es), method="REML", test="t",
+                        mods = ~ 0 + outcome,
+                        control=list(optimizer="optim", optmethod="Nelder-Mead"))
+  
+  RobuEstMeta_CON_ri <- robust(Meta_CON_ri, data$study)
+  
+  z2r_CON <- psych::fisherz2r(RobuEstMeta_CON_ri$b)
+  z2r_CON_lower <- psych::fisherz2r(RobuEstMeta_CON_ri$ci.lb)
+  z2r_CON_upper <- psych::fisherz2r(RobuEstMeta_CON_ri$ci.ub)
+  
+  # Impute mising pre-post correlations
+  data <- data |>
+    mutate(
+      RT_ri = case_when(
+        is.na(RT_ri) & outcome == "hypertrophy" ~ z2r_RT[1],
+        is.na(RT_ri) & outcome == "strength" ~ z2r_RT[2],
+        .default = RT_ri
+      ),
+      CON_ri = case_when(
+        is.na(CON_ri) & outcome == "hypertrophy" ~ z2r_CON[1],
+        is.na(CON_ri) & outcome == "strength" ~ z2r_CON[2],
+        .default = CON_ri
+      )
+    )
+  
+  
+  
+  # Between arms 
+  data <- subset(data, study_design == "between")
+  data$SD_pool <- sqrt(((data$RT_n - 1)*data$RT_pre_sd^2 + (data$CON_n - 1)*data$CON_pre_sd^2) / (data$RT_n + data$CON_n - 2))
+  
+  data_RT <- escalc(measure="SMCR", m1i=RT_post_m, 
+                                m2i=RT_pre_m, sd1i=SD_pool, ni=RT_n, ri=RT_ri, data = data)
+  data_CON <- escalc(measure="SMCR", m1i=CON_post_m, 
+                                 m2i=CON_pre_m, sd1i=SD_pool, ni=CON_n, ri=CON_ri, data = data)
+  
+  data$yi_between <- (data_RT$yi - data_CON$yi)
+  data$vi_between <- (data_RT$vi + data_CON$vi)
+  
+  # Within arms
+  data <- escalc(measure="SMCR", m1i=RT_post_m, 
+                 m2i=RT_pre_m, sd1i=RT_pre_sd, ni=RT_n, ri=RT_ri, data = data,
+                 var.names = c("yi_within", "vi_within"))
+  
+  
+  data <- data %>%
+    filter(!is.na(yi_between) & !is.na(yi_within))
+  
+  return(data)
+}
+
+plot_between_within_ates <- function(data) {
+  between_within_ates <- data |>
+    ggplot(aes(x = yi_between, y = yi_within)) +
+    scale_color_viridis_b() +
+    geom_hline(yintercept = 0, linetype = 2) +
+    geom_vline(xintercept = 0, linetype = 2) +
+    geom_abline(intercept = 0, slope = 1, linetype = 2) + 
+    geom_point(alpha = 0.5) +
+    labs(x = "Standardised Mean Difference\n(Postive values indicate greater treatment response in RT compared to CON)",
+         y = "Standardised Mean Change\n(Postive values indicate greater outcome post RT)") +
+    theme_classic()
+  
+  
+  return(between_within_ates)
+}
+
 ## Comparing to rho_Pre:Post ----
 
 get_pre_post_rho <- function(data) {
@@ -648,7 +783,7 @@ get_pre_post_rho <- function(data) {
   
   RobuEstMeta_CON_ri <- robust(Meta_CON_ri, data$study)
   
-  z2r_CON <- psych::fisherz2r(RobuEstMeta_CON_ri$b[1])
+  z2r_CON <- psych::fisherz2r(RobuEstMeta_CON_ri$b)
   z2r_CON_lower <- psych::fisherz2r(RobuEstMeta_CON_ri$ci.lb)
   z2r_CON_upper <- psych::fisherz2r(RobuEstMeta_CON_ri$ci.ub)
   

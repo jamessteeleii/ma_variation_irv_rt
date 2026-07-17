@@ -147,6 +147,30 @@ list(
   ),
   
   tar_target(
+    between_within_ates,
+    get_between_within_ates(data)
+  ),
+  
+  tar_target(
+    between_within_ates_plot,
+    plot_between_within_ates(between_within_ates)
+  ),
+  
+  tar_target(
+    between_within_ates_plot_tiff,
+    {
+      ggsave(
+        plot = between_within_ates_plot,
+        filename = "plots/between_within_ates_plot.tiff",
+        device = "tiff",
+        dpi = 300,
+        width = 8,
+        height = 5
+      )
+    }
+  ),
+  
+  tar_target(
     rho_assumptions_data,
     check_rho_assumptions_data(data)
   ),

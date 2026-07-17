@@ -8,19 +8,21 @@ check_rho_assumptions|function|3013422153874823
 rho_assumptions_plot|stem|6e82327f5fc478c0|4ba1863b4e5c40ad|3d00b81608c3c29c|-1802976601||t20644.5910172864s|s229897b|229897|qs|local|vector|||1.73|package 'ggplot2' was built under R version 4.5.3. package 'purrr' was built under R version 4.5.3. package 'dplyr' was built under R version 4.5.3. package 'metafor' was built under R version 4.5.3. package 'metadat' was built under R version 4.5.3. package 'bayestestR' was built under R version 4.5.3|
 rho_assumptions_plot_data|stem|159bd68dd1fc761c|004fe184c36fea5f|2b6524d9bbdf5946|271228292||t20644.5910216946s|s499338b|499338|qs|local|vector|||0.12||
 rho_assumptions_data|stem|58906276855bdadc|004fe184c36fea5f|fd658c1ba85643ad|377361333||t20644.5922233394s|s67987b|67987|qs|local|vector|||0.09||
-pre_post_rho_checks|stem|b7284a46434cc13f|47978ba7116d5e14|43b3bb9f8af2d481|291045317||t20650.5029358966s|s890815b|890815|qs|local|vector|||1.78|Some 'yi' and/or 'vi' values equal to +-Inf. Recoded to NAs.. Cannot estimate the sampling variance when ni <= 3.. Some 'yi' and/or 'vi' values equal to +-Inf. Recoded to NAs.. 1037 rows with NAs omitted from model fitting.. 1020 rows with NAs omitted from model fitting.. 1031 rows with NAs omitted from model fitting.|
 rho_assumptions_data_plot|stem|a36da91823630af5|dea54dcfb05ad2ee|24932d4a4cb03992|925451674||t20650.5386852531s|s509221b|509221|qs|local|vector|||0.06||
 models_plot|stem|dbc11a15a9654854|674faed5d4a32132|2d26c9fa31f8a780|-1745638733||t20650.5386993409s|s2451291b|2451291|qs|local|vector|||0.25||
 rho_assumptions_plot_tiff|stem|983b738fbe238ab0|a198497e837b26bb|4298d8db4ca7d55d|-340706008||t20651.5067835415s|s107b|107|qs|local|vector|||0.21||
 rho_assumptions_data_plot_tiff|stem|fb404b4536717640|07c84d2ec5a11fff|03e3aa900b4fed22|-2077024891||t20651.5067882301s|s112b|112|qs|local|vector|||0.14||
 models_plot_tiff|stem|18ba52ed70b4a38d|e5a22188f0c3228b|396fbadcf114490d|-98096502||t20651.5079864315s|s98b|98|qs|local|vector|||1.06||
 mean_var_plot_tiff|stem|c304bef0d934dc78|a12919972695b479|0ef5b2c9d2597fce|1735139736||t20651.5084907561s|s100b|100|qs|local|vector|||0.88|Removed 183 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 183 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 123 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 123 rows containing missing values or values outside the scale range (`geom_point()`).|
+grateful_report|stem|f151645be8fc3e55|20b45477deca2eca|2c530c1562a7fbd1|1345217321||t20651.5123315286s|s98b|98|qs|local|vector|||4.32|package 'ggplot2' was built under R version 4.5.3. package 'purrr' was built under R version 4.5.3. package 'dplyr' was built under R version 4.5.3. package 'metafor' was built under R version 4.5.3. package 'metadat' was built under R version 4.5.3. package 'bayestestR' was built under R version 4.5.3. NAs introduced by coercion: 1,2,3 is not an integer|
 plot_mean_variance|function|ccfb650521a8cc61
 bootstrap_sigma_d|function|e7a57f47b3c9da52
 p_from_z|function|a47bd76bdcdfc529
 plot_rho_assumptions_data|function|5ee666e313b1c904
 estimate_sigma_d|function|fb1a3fa12dba5f65
-get_pre_post_rho|function|3395a0f5e9b6a74b
+plot_between_within_ates|function|e986093eaa07e0eb
+get_pre_post_rho|function|ac0e06873c27c92a
+get_between_within_ates|function|7a4f2f454fdf4019
 plot_models|function|c8819439d669ccc0
 prepare_data|function|ebf950e0df0460f6
 fit_mean_var_meta|function|6b0f4b01fd03f9a3
@@ -29,4 +31,7 @@ estimate_p_minus|function|936d9c0a1b789d57
 plot_rho_assumptions|function|3013422153874823
 check_rho_assumptions_data|function|43fb643f51d30d34
 sensitivity_analysis|function|b217d62d2d844b89
-grateful_report|stem|f151645be8fc3e55|20b45477deca2eca|2c530c1562a7fbd1|1345217321||t20651.5123315286s|s98b|98|qs|local|vector|||4.32|package 'ggplot2' was built under R version 4.5.3. package 'purrr' was built under R version 4.5.3. package 'dplyr' was built under R version 4.5.3. package 'metafor' was built under R version 4.5.3. package 'metadat' was built under R version 4.5.3. package 'bayestestR' was built under R version 4.5.3. NAs introduced by coercion: 1,2,3 is not an integer|
+between_within_ates|stem|b2b5a223002f23e5|391d7049d5c1068b|dc0c2f80eb5fe870|-1668908705||t20651.5556322195s|s95258b|95258|qs|local|vector|||1.19|Some 'yi' and/or 'vi' values equal to +-Inf. Recoded to NAs.. Cannot estimate the sampling variance when ni <= 3.. Some 'yi' and/or 'vi' values equal to +-Inf. Recoded to NAs.. 967 rows with NAs omitted from model fitting.. 980 rows with NAs omitted from model fitting.|
+pre_post_rho_checks|stem|f4b3c528100d35cd|47978ba7116d5e14|4f2f878ca294e6f4|291045317||t20651.5556492512s|s891513b|891513|qs|local|vector|||1.22|Some 'yi' and/or 'vi' values equal to +-Inf. Recoded to NAs.. Cannot estimate the sampling variance when ni <= 3.. Some 'yi' and/or 'vi' values equal to +-Inf. Recoded to NAs.. 1037 rows with NAs omitted from model fitting.. 1020 rows with NAs omitted from model fitting.. 1031 rows with NAs omitted from model fitting.|
+between_within_ates_plot|stem|bf592e459cbf1226|1a0ceb591a002cf6|c59ef053b233b700|-604425312||t20651.5556532518s|s651521b|651521|qs|local|vector|||0.07||
+between_within_ates_plot_tiff|stem|742a1b9a5c879830|5d8ee8d065e004e0|9bcd92397117ce1a|1354032817||t20651.5556593207s|s111b|111|qs|local|vector|||0.26||

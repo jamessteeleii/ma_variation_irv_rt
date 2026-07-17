@@ -38,9 +38,9 @@ library(tidyverse)
 
 This supplementary material accompanies the preprint: 
 
-> Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.????](https://doi.org/10.51224/SportRxiv.????). Address for correspondence: james@steele-research.com
+> Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons in a large dataset of randomised controlled trials. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.????](https://doi.org/10.51224/SportRxiv.????). Address for correspondence: james@steele-research.com
 
-# Assumed values of $\rho_{Int:Con}$
+# Assumed values of $\rho_{Int:Con}$ for a given variance ratio
 As shown by Caldwell et al. [-@caldwellConcernsRegardingStandard2025], the assumed value of $\rho_{Int:Con}$ is dependent upon the ratio between the observed standard deviations in the intervention and control conditions in any variance comparisons performed. This is visualised in @fig-assumed-rho.
 
 ```{r}
@@ -89,5 +89,57 @@ targets::tar_load(mean_var_plot)
 #| fig-cap: Scatter plots of raw mean and standard deviation of post-intervention scores for (a) strength outcomes and (b) hypertrophy outcomes, and of the log mean and log standard deviation of post-intervention scores for (c) strength outcomes and (d) hypertrophy outcomes.
 
 mean_var_plot
+
+```
+
+# Assumed values of $\rho_{Int:Con}$ in the current dataset for all variance comparisons
+According to Caldwell et al. [-@caldwellConcernsRegardingStandard2025], the assumed value of $\rho_{Int:Con}$ was calculated from the ratio between the observed standard deviations in the intervention and control conditions in all variance comparisons performed. This is visualised in @fig-assumed-rho-data.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+targets::tar_load(rho_assumptions_data_plot)
+
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-assumed-rho-data
+#| fig-width: 10
+#| fig-height: 7.5
+#| fig-cap: Histogram of all assumed values of $\rho_{Int:Con}$ calculated from the observed standard deviations in the intervention and control conditions in all variance comparisons for the current dataset.
+
+rho_assumptions_data_plot
+
+```
+
+# Comparison of between condition (i.e., intervention minus control) and within condition (i.e., post minus pre scores for intervention) average intervention effect estimates
+To check whether $\overline{D}=\overline{Y_{Post}}-\overline{Y_{Pre}}$ is  an unbiased estimate of $D=Y_{Int}-Y_{Con}$ I compared across all studies and outcomes the sample based standardised effect size estimate either between intervention and control for a pre-post RCT design (i.e., Using Morris' [-@morrisEstimatingEffectSizes2008] $PPC_2$ with the pooled pre-intervention standard deviation as denominator) and the corresponding standardised effect estimate from the within intervention arm only from pre-intervention to post-intervention (i.e., using Becker's [-@beckerSynthesizingStandardizedMeanchange1988] $d$ and the pre-intervention standard deviation as denominator) with corresponding small sample bias adjustment for both. Both effects were very strongly correlated with no obvious systematic bias between estimates and this visualised can be seen in @fig-between-within.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+targets::tar_load(between_within_ates_plot)
+
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-between-within
+#| fig-width: 7.5
+#| fig-height: 5
+#| fig-cap: Scatter plot of Morris' [-@morrisEstimatingEffectSizes2008] $PPC_2$ and Becker's [-@beckerSynthesizingStandardizedMeanchange1988] $d$ both with small sample bias adjustment for the current dataset.
+
+between_within_ates_plot
 
 ```
