@@ -14,6 +14,7 @@ models_plot|stem|dbc11a15a9654854|674faed5d4a32132|2d26c9fa31f8a780|-1745638733|
 rho_assumptions_plot_tiff|stem|983b738fbe238ab0|a198497e837b26bb|4298d8db4ca7d55d|-340706008||t20651.5067835415s|s107b|107|qs|local|vector|||0.21||
 rho_assumptions_data_plot_tiff|stem|fb404b4536717640|07c84d2ec5a11fff|03e3aa900b4fed22|-2077024891||t20651.5067882301s|s112b|112|qs|local|vector|||0.14||
 models_plot_tiff|stem|18ba52ed70b4a38d|e5a22188f0c3228b|396fbadcf114490d|-98096502||t20651.5079864315s|s98b|98|qs|local|vector|||1.06||
+mean_var_plot_tiff|stem|c304bef0d934dc78|a12919972695b479|0ef5b2c9d2597fce|1735139736||t20651.5084907561s|s100b|100|qs|local|vector|||0.88|Removed 183 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 183 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 123 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 123 rows containing missing values or values outside the scale range (`geom_point()`).|
 plot_mean_variance|function|ccfb650521a8cc61
 bootstrap_sigma_d|function|e7a57f47b3c9da52
 p_from_z|function|a47bd76bdcdfc529
@@ -28,4 +29,4 @@ estimate_p_minus|function|936d9c0a1b789d57
 plot_rho_assumptions|function|3013422153874823
 check_rho_assumptions_data|function|43fb643f51d30d34
 sensitivity_analysis|function|b217d62d2d844b89
-mean_var_plot_tiff|stem|c304bef0d934dc78|a12919972695b479|0ef5b2c9d2597fce|1735139736||t20651.5084907561s|s100b|100|qs|local|vector|||0.88|Removed 183 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 183 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 123 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 123 rows containing missing values or values outside the scale range (`geom_point()`).|
+grateful_report|stem|f151645be8fc3e55|20b45477deca2eca|2c530c1562a7fbd1|1345217321||t20651.5123315286s|s98b|98|qs|local|vector|||4.32|package 'ggplot2' was built under R version 4.5.3. package 'purrr' was built under R version 4.5.3. package 'dplyr' was built under R version 4.5.3. package 'metafor' was built under R version 4.5.3. package 'metadat' was built under R version 4.5.3. package 'bayestestR' was built under R version 4.5.3. NAs introduced by coercion: 1,2,3 is not an integer|

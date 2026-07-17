@@ -173,8 +173,13 @@ list(
   tar_target(
     pre_post_rho_checks,
     get_pre_post_rho(data)
+  ),
+  
+  # Add grateful report ----
+  
+  tar_target(
+    grateful_report,
+    grateful::cite_packages(out.dir = ".", out.format = "html")
   )
-  
-  
   
 )
