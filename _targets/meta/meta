@@ -9,6 +9,11 @@ rho_assumptions_plot|stem|6e82327f5fc478c0|4ba1863b4e5c40ad|3d00b81608c3c29c|-18
 rho_assumptions_plot_data|stem|159bd68dd1fc761c|004fe184c36fea5f|2b6524d9bbdf5946|271228292||t20644.5910216946s|s499338b|499338|qs|local|vector|||0.12||
 rho_assumptions_data|stem|58906276855bdadc|004fe184c36fea5f|fd658c1ba85643ad|377361333||t20644.5922233394s|s67987b|67987|qs|local|vector|||0.09||
 pre_post_rho_checks|stem|b7284a46434cc13f|47978ba7116d5e14|43b3bb9f8af2d481|291045317||t20650.5029358966s|s890815b|890815|qs|local|vector|||1.78|Some 'yi' and/or 'vi' values equal to +-Inf. Recoded to NAs.. Cannot estimate the sampling variance when ni <= 3.. Some 'yi' and/or 'vi' values equal to +-Inf. Recoded to NAs.. 1037 rows with NAs omitted from model fitting.. 1020 rows with NAs omitted from model fitting.. 1031 rows with NAs omitted from model fitting.|
+rho_assumptions_data_plot|stem|a36da91823630af5|dea54dcfb05ad2ee|24932d4a4cb03992|925451674||t20650.5386852531s|s509221b|509221|qs|local|vector|||0.06||
+models_plot|stem|dbc11a15a9654854|674faed5d4a32132|2d26c9fa31f8a780|-1745638733||t20650.5386993409s|s2451291b|2451291|qs|local|vector|||0.25||
+rho_assumptions_plot_tiff|stem|983b738fbe238ab0|a198497e837b26bb|4298d8db4ca7d55d|-340706008||t20651.5067835415s|s107b|107|qs|local|vector|||0.21||
+rho_assumptions_data_plot_tiff|stem|fb404b4536717640|07c84d2ec5a11fff|03e3aa900b4fed22|-2077024891||t20651.5067882301s|s112b|112|qs|local|vector|||0.14||
+models_plot_tiff|stem|18ba52ed70b4a38d|e5a22188f0c3228b|396fbadcf114490d|-98096502||t20651.5079864315s|s98b|98|qs|local|vector|||1.06||
 plot_mean_variance|function|ccfb650521a8cc61
 bootstrap_sigma_d|function|e7a57f47b3c9da52
 p_from_z|function|a47bd76bdcdfc529
@@ -23,5 +28,4 @@ estimate_p_minus|function|936d9c0a1b789d57
 plot_rho_assumptions|function|3013422153874823
 check_rho_assumptions_data|function|43fb643f51d30d34
 sensitivity_analysis|function|b217d62d2d844b89
-rho_assumptions_data_plot|stem|a36da91823630af5|dea54dcfb05ad2ee|24932d4a4cb03992|925451674||t20650.5386852531s|s509221b|509221|qs|local|vector|||0.06||
-models_plot|stem|dbc11a15a9654854|674faed5d4a32132|2d26c9fa31f8a780|-1745638733||t20650.5386993409s|s2451291b|2451291|qs|local|vector|||0.25||
+mean_var_plot_tiff|stem|c304bef0d934dc78|a12919972695b479|0ef5b2c9d2597fce|1735139736||t20651.5084907561s|s100b|100|qs|local|vector|||0.88|Removed 183 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 183 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 123 rows containing missing values or values outside the scale range (`geom_point()`).. Removed 123 rows containing missing values or values outside the scale range (`geom_point()`).|

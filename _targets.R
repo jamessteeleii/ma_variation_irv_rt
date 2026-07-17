@@ -81,6 +81,20 @@ list(
     plot_mean_variance(data_prepared)
   ),
   
+  tar_target(
+    mean_var_plot_tiff,
+    {
+      ggsave(
+        plot = mean_var_plot,
+        filename = "plots/mean_var_plot.tiff",
+        device = "tiff",
+        dpi = 300,
+        width = 10,
+        height = 7.5
+      )
+    }
+  ),
+  
   # Fit models ----
   tar_target(
     strength_model,
@@ -98,10 +112,38 @@ list(
     plot_models(data_prepared, strength_model, hypertrophy_model)
   ),
   
+  tar_target(
+    models_plot_tiff,
+    {
+      ggsave(
+        plot = models_plot,
+        filename = "plots/models_plot.tiff",
+        device = "tiff",
+        dpi = 300,
+        width = 10,
+        height = 5
+      )
+    }
+  ),
+  
   # Check rho_Int:Con assumptions ----
   tar_target(
     rho_assumptions_plot,
     plot_rho_assumptions()
+  ),
+  
+  tar_target(
+    rho_assumptions_plot_tiff,
+    {
+      ggsave(
+        plot = rho_assumptions_plot,
+        filename = "plots/rho_assumptions_plot.tiff",
+        device = "tiff",
+        dpi = 300,
+        width = 8,
+        height = 5
+      )
+    }
   ),
   
   tar_target(
@@ -112,6 +154,20 @@ list(
   tar_target(
     rho_assumptions_data_plot,
     plot_rho_assumptions_data(rho_assumptions_data)
+  ),
+  
+  tar_target(
+    rho_assumptions_data_plot_tiff,
+    {
+      ggsave(
+        plot = rho_assumptions_data_plot,
+        filename = "plots/rho_assumptions_data_plot.tiff",
+        device = "tiff",
+        dpi = 300,
+        width = 8,
+        height = 5
+      )
+    }
   ),
   
   tar_target(
