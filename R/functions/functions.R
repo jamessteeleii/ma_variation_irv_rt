@@ -154,7 +154,7 @@ plot_models <- function(data_prepared, strength_model, hypertrophy_model) {
     geom_line(aes(y=pred, color = group)) +
     annotate(x=max(log(data_prepared_strength$mean))*0.75,y=max(data_prepared_strength$yi)*0.25,
              geom = "text",
-             label = glue::glue("Between Condition Contrast\n{round(strength_model$b[3],2)} [95%CI: {round(strength_model$ci.lb[3],2)}, {round(strength_model$ci.ub[3],2)}]"),
+             label = glue::glue("Between Condition Contrast\n{round(strength_model$b[3],2)} [95%CI: {round(strength_model$ci.lb[3],2)}, {round(strength_model$ci.ub[3],3)}]"),
              size = 2) +
     scale_fill_manual("Group", values = alpha(c("Black", "#E69F00"),0.5)) +
     scale_color_manual("Group", values = alpha(c("Black", "#E69F00"),0.5)) +
@@ -548,9 +548,9 @@ plot_rho_assumptions_data <- function(rho_assumptions_data) {
   rho_hist <- rho_assumptions_data |> 
     ggplot(aes(x=sdir_rho_xy)) +
     geom_histogram(color="black", linewidth =  .5) +
-    geom_vline(aes(xintercept = median(sdir_rho_xy))) +
-    geom_vline(aes(xintercept = quantile(sdir_rho_xy, .25)), linetype = "dashed") +
-    geom_vline(aes(xintercept = quantile(sdir_rho_xy, .75)), linetype = "dashed") +
+    # geom_vline(aes(xintercept = median(sdir_rho_xy))) +
+    # geom_vline(aes(xintercept = quantile(sdir_rho_xy, .25)), linetype = "dashed") +
+    # geom_vline(aes(xintercept = quantile(sdir_rho_xy, .75)), linetype = "dashed") +
     
     labs(x = expression("Assumed value of " * rho[{"Int:Con"}])) +
     theme_classic() +
@@ -661,7 +661,9 @@ get_pre_post_rho <- function(data) {
     ci.ub = psych::fisherz2r(c(RobuEstMeta_RT_ri$ci.ub, RobuEstMeta_CON_ri$ci.ub))
   )
   
+  checks_for_cors <- list(RobuEstMeta_diff_ri,
+                          pre_post_cors)
   
-  pre_post_cors
-  
+  return(checks_for_cors)
+
 }

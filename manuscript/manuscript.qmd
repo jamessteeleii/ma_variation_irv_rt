@@ -51,13 +51,23 @@ execute:
   message: false
   warning: false
 ---
+```{r}
+#| include: false
+
+targets::tar_config_set(store = here::here('_targets'))
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+options(knitr.kable.NA = '')
+
+library(tidyverse)
+
+```
 
 # Introduction
 Variation in responses to resistance training has become a topic of considerable interest within sport and exercise science. Large differences are routinely observed between participants following apparently identical training programmes for the outcomes captured, and these differences are frequently interpreted as evidence that individuals differ meaningfully in their responsiveness to training. Such interpretations underpin discussions of "responders" and "non-responders", personalised exercise prescription, and the search for biological determinants of intervention responsiveness. However, most people working on this topic confuse the observed variation in *outcomes* with there necessarily being heterogeneity in the *underlying effect of an intervention*. This typically has involved merely considering the distribution of outcomes observed in the intervention arms of trials which is insufficient for determining whether such variance is due to the effects of the intervention themselves varying between individuals. But, careful consideration of the underlying causal structure of the question of intervention effect heterogeneity allows us to better evaluate whether there is or is not evidence suggesting it is present. 
 
 Partitioning of variance components of observed outcomes such that we can draw inferences regarding the presence (or not) of heterogeneity in the underlying causal effect of treatment is incredibly difficult. Typically, study designs such as those used by Robinson et al. (2025) (i.e., randomised replicated crossovers) are required. But, in the context of a traditional randomised controlled trial (RCT) where the control can be reasonably assumed to be inert (i.e., has no effect itself), such as a non-training control in studies of healthy untrained[^1] participants, we can obtain some insight into whether interindividual heterogeneity in intervention effects may be present.
 
-[^1]: Untrained participants given in a trained population we might expect *a priori* that a detraining effect may occur after cessation of their training. In the case of trained participants, as others have argued (**ADD REF**), continuation of existing training may be a better control condition and indeed especially so when participants are already sufficiently trained (i.e., having trained consistently and using known effective interventions for at least one full year **ADD REFS**) such that they are no longer experiencing meaningful intervention effects anyway.
+[^1]: Untrained participants given in a trained population we might expect *a priori* that a detraining effect may occur after cessation of their training. In the case of trained participants, as others have argued (Hammert et al. 2024), continuation of existing training may be a better control condition and indeed especially so when participants are already sufficiently trained (i.e., having trained consistently and using known effective interventions for at least one full year; Steele et al., 2023; Roberts et al., 2026) such that they are no longer experiencing meaningful intervention effects anyway.
 
 ::: {#fig-rct-logic layout-nrow=2 layout-ncol=2}
 
@@ -73,7 +83,7 @@ Logic of randomised controlled trial design shown via directed acyclic graphs fo
 
 :::
 
-The logic of the RCT design (@fig-rct-logic) allows us to obtain an unbiased estimate of the clearly defined estimand that is the average intervention effect (@eq-ate-estimand) through comparison of the marginal distributions of outcomes between the conditions e.g., intervention vs control (@eq-ate-estimate). 
+The logic of the RCT design (@fig-rct-logic), where possible confounders between intervention and outcome are removed through the process of randomisation, allows us to obtain an unbiased estimate of the clearly defined estimand that is the average intervention effect (@eq-ate-estimand) through comparison of the marginal distributions of outcomes between the conditions e.g., intervention vs control (@eq-ate-estimate). 
 
 $$
 \begin{gathered}
@@ -121,7 +131,7 @@ where $y_i$ is the outcome, $x_i$ is a categorical predictor for the condition i
 
 ![Sources of variance in outcomes observed](images/Slide29.png){height=8cm}
 
-Mapping of estimand and estimate in the randomised controlled trial design for estimating average intervention effects alongside the directed acyclic graph. In (a) we have the defined estimand of the average treatment effect, our estimate based on the marginal distributions of interventions and controls (i.e., the causal arrow from intervention to outcome), and the standard deviation of treatment effects in addition to the general linear model estimator used to yield and estimate of this average treatment effect. The components of the general linear model are mapped to the their corresponding components in the causal structure including the observed outcomes $y_i$, the randomly assigned intervention $x_i$, and the estimated average causal effect of the intervention compared to the control $\beta_1$. In (b), (c), and (d) it shows that some of the variance in observed outcomes i.e., $\sigma$, may be due to intervention effect heterogeneity i.e., $\sigma_{D}^2$ (the dashed arrow in (d) depicting interaction of the individual with the intervention), but that there are numerous other sources of variance and that these also differ between the intervention and control conditions. 
+Mapping of estimand and estimate in the randomised controlled trial design for estimating average intervention effects alongside the directed acyclic graph. In (a) we have the defined estimand of the average treatment effect, our estimate based on the marginal distributions of interventions and controls (i.e., the causal path/arrow from intervention to outcome), and the standard deviation of treatment effects in addition to the general linear model estimator used to yield and estimate of this average treatment effect. The components of the general linear model are mapped to the their corresponding components in the causal structure including the observed outcomes $y_i$, the randomly assigned intervention $x_i$, and the estimated average causal effect of the intervention compared to the control $\beta_1$. In (b), (c), and (d) it shows that some of the variance in observed outcomes i.e., $\sigma$, may be due to intervention effect heterogeneity i.e., $\sigma_{D}^2$ (the dashed arrow in (d) depicting interaction of the individual with the intervention), but that there are numerous other sources of variance and that these also differ between the intervention and control conditions. Note, thin arrows from equations map to the elements of the directed acyclic graph (i.e., nodes or causal paths/arrows).
 
 :::
 
@@ -155,10 +165,12 @@ Considering the causal logic of the RCT, and the assumptions that need to be exa
 All data, code, and materials for the present work are available at: ADD LINKS. All packages used for analysis are cited in the corresponding report generated by the grateful package. 
 
 ## Dataset
-In Steele et al. (2023) we utilised the studies previously systematically reviewed by Polito et al. (2021) which were all RCTs of resistance training interventions compared to non-training controls where it could be expected that the control conditions were essentially inert. We re-extracted data from the studies they identified and full details of this dataset can be seen in Steele et al. (2023) in addition to the data being openly available (INSERT LINKS). Here I limit the dataset to only studies of untrained participants (see footnote 1) and explore the both the pooled strength and pooled hypertrophy outcomes.
+In Steele et al. (2023) we utilised the studies previously systematically reviewed by Polito et al. (2021) which were all RCTs of resistance training interventions compared to non-training controls where it could be expected that the control conditions were essentially inert. We re-extracted data from the studies they identified and full details of this dataset can be seen in Steele et al. (2023) in addition to the data being openly available (INSERT LINKS). Here I limit the dataset to only studies of untrained participants (see footnote 1) and explore both the pooled strength and pooled hypertrophy outcomes.
 
 ## Analysis
-An arm-based approach was taken using a multilevel meta-analytic model of the log transformed standard deviations for each outcome at post-intervention regressed upon the log transformed means for each outcome at post-intervention and the arm from which these variances came (i.e., intervention or control) allowing for comparison of variances between arms whilst adjusting for the population mean-variance relationship. The model was thus: 
+An arm-based approach was taken using a multilevel meta-analytic model of the log transformed standard deviations for each outcome at post-intervention[^2] regressed upon the log transformed means for each outcome at post-intervention and the arm from which these variances came (i.e., intervention or control) allowing for comparison of variances between arms whilst adjusting for the population mean-variance relationship. The model was thus: 
+
+[^2]: Note, previously in Steele et al., (2023) we contrasted the variance in change scores between intervention and controls. However, this required in many cases the calculation or imputation of estimated $\rho_{Pre:Post}$ in order to calculate the change score standard deviations when they were not reported. Further, in some cases (likely due to rounding when reporting) change score means for control arms were close to, or in fact, zero which presents an issue for approaches to adjust for mean-variance relationships as the coefficient of variation is undefined for zero as are log transformations. Finally, change scores for outcomes that are negative require must be sign transformed and taken as absolute values under the assumption that mean-variance relationships are typically symmetric about zero so that absolute change scores are used. However, in the context of a randomised controlled trial, due to randomisation the post score contrast between intervention and control is an unbiased estimator for the average intervention effect (i.e., the mean) and also any variance contrast given that at post-intervention the variance $\sigma$ in observed outcomes $y_i$ is due to between participant variation, within participant variation, and other sources of random error in the inert control condition, whereas in the intervention condition only will there potentially be the additional source of variation that is the interindividual variation of the intervention effect itself (i.e., $\sigma_{D}^2$). As such, here I present analysis of the post-intervention scores only.
 
 $$
 \begin{aligned}
@@ -166,20 +178,85 @@ $$
 \end{aligned}
 $$ {#eq-mean-var-meta}
 
-where $\text{ln}(\hat{\sigma}_{ijk}))$ is the log transformed standard deviation of outcomes for the $k^{th}$ outcome in the $j^{th}$ arm in the $i^{th}$ study, $\text{ln}(\hat{\mu}_{ijk}))$ is the log transformed mean of outcomes with the same subscripts, $\beta_{0}$ is the average log transformed standard deviation in the control arms, $\beta_{1}$ is the slope of the log transformed mean upon the log transformed standard deviation, $\tau_{1i}$, $\tau_{2j}$, and $\tau_{3k}$ are the respective normally distributed variances for study, arm, and effect, $\epsilon_{ijk}$ and $m_{ijk}$ are similarly the residual variance and sampling errors respectively, finally $x_{Cond}$ is a categorical predictor indicating whether and effect is from a control or intervention arm and $|beta_{2}$ reflects the estimate of the average difference in variances between the control and intervention arms. 
+where $\text{ln}(\hat{\sigma}_{ijk}))$ is the log transformed standard deviation of outcomes for the $k^{th}$ outcome in the $j^{th}$ arm in the $i^{th}$ study, $\text{ln}(\hat{\mu}_{ijk}))$ is the log transformed mean of outcomes with the same subscripts, $\beta_{0}$ is the average log transformed standard deviation in the control arms, $\beta_{1}$ is the slope of the log transformed mean upon the log transformed standard deviation, $\tau_{1i}$, $\tau_{2j}$, and $\tau_{3k}$ are the respective normally distributed variances for study, arm, and effect, $\epsilon_{ijk}$ and $m_{ijk}$ are similarly the residual variance and sampling errors respectively, finally $x_{Cond}$ is a categorical predictor indicating whether and effect is from a control or intervention arm and $\beta_{2}$ reflects the estimate of the average difference in variances between the control and intervention arms. 
 
-As noted variance comparisons in RCTs inherently make assumptions regarding the unobservable correlation between potential outcomes ($\rho_{Int:Con}$). As such, in order to draw justifiable conclusions from the analysis I perform here we should check these assumptions. I calculate this for all the included variance contrasts in the meta-analytic dataset and examine whether the empirical distribution of assumed values are a justifiable assumption to allow us to treat our variance comparisons as indicative of whether there is, or is not, any interindividual intervention effect heterogeneity (see https://osf.io/cg63r). 
+As noted variance comparisons in RCTs inherently make assumptions regarding the unobservable correlation between potential outcomes ($\rho_{Int:Con}$). As such, in order to draw justifiable conclusions from the analysis I perform here I empirically check these assumptions. I calculate the assumed $\rho_{Int:Con}$ for all the included variance contrasts in the meta-analytic dataset and examine whether the empirical distribution of assumed values are a justifiable assumption to allow us to treat our variance comparisons as indicative of whether there is, or is not, any interindividual intervention effect heterogeneity (see https://osf.io/cg63r).
 
-To do so I examine with the same dataset the meta-analytic estimate for $\rho_{Pre:Post}$ in both intervention and control groups. Typically using the marginal estimate $\overline{D}=\overline{Y_{Post}}-\overline{Y_{Pre}}$ is not an unbiased estimated of $D=Y_{Int}-Y_{Con}$ and can  be misleading regarding the presence, or not, of interindividual intervention effect heterogeneity^2. However, in the case of resistance training interventions in healthy participants with strength/hypertrophy outcomes it is in fact a relatively unbiased estimate of $D$^3. As such, $\rho_{Pre:Post}$ might be a reasonable estimate of $\rho_{Int:Con}$ and so I compare this with the calculated values of assumed $\rho_{Int:Con}$.
+Typically, the marginal estimate $\overline{D}=\overline{Y_{Post}}-\overline{Y_{Pre}}$ is not an unbiased estimate of $D=Y_{Int}-Y_{Con}$ and can  be misleading regarding the presence, or not, of interindividual intervention effect heterogeneity[^3]. However, in the case of resistance training interventions in healthy participants with strength/hypertrophy outcomes it is in fact a relatively unbiased estimate of $D$[^4]. As such, $\rho_{Pre:Post}$ might be considered a reasonable estimate of $\rho_{Int:Con}$.
 
-[^2]: For example, this was incorrectly inferred based on variance in observed change scores in the now classic paper from Hubal et al. (2005) on this topic.
+However, variance comparison methods also assume that rank ordering of responses are similarly maintained in both intervention and control arms and thus that $\rho_{Pre:Post_{Int}}\approx\rho_{Pre:Post_{Con}}$ because: 
 
-[^3]: To check this assumption I compared across all studies and outcomes the sample based standardised effect size estimate either between intervention and control for a pre-post RCT design (i.e., Using Morris' $PPC_1$ with the pooled pre-intervention standard deviation as denominator) and the corresponding standardised effect estimate from the within intervention arm only from pre-intervention to post-intervention (i.e., using Becker's $d$ and the pre-intervention standard deviation as denominator). Both effects were very strongly correlated with no obvious systematic bias between estimates. 
+$$
+\begin{gathered}
+\sigma_{Change}^2=\sigma_{Pre}^2+\sigma_{Post}^2-2\sigma_{Pre}\sigma_{Post}\rho_{Pre:Post} 
+\end{gathered}
+$$ {#eq-sd}
+
+To check this assumption, with the same dataset I examine the meta-analytic estimate for $\rho_{Pre:Post}$ (using a similar multilevel model structure as noted above) for the Fisher's $r$ to $z$ scale transformed values in both intervention and control arms in addition to their difference limiting this to only those studies where it this is directly reported or it is possible to exactly reconstruct the $\rho_{Pre:Post}$ from pre, post, and change score standard deviations. Thus I checked whether the $\rho_{Pre:Post}$ was invariant to the intervention assignment and following this whether the assumed $\rho_{Int:Con}$ distribution was similar to $\rho_{Pre:Post}$ in the included studies. Essentially this answers whether assuming a common value for $\rho$ is reasonable and whether assignment to intervention or control fundamentally changes the covariance structure.
+
+[^3]: For example, this was incorrectly inferred based on variance in observed relative change scores in the now classic paper from Hubal et al. (2005) on this topic.
+
+[^4]: To check this assumption I compared across all studies and outcomes the sample based standardised effect size estimate either between intervention and control for a pre-post RCT design (i.e., Using Morris' $PPC_2$ with the pooled pre-intervention standard deviation as denominator) and the corresponding standardised effect estimate from the within intervention arm only from pre-intervention to post-intervention (i.e., using Becker's $d$ and the pre-intervention standard deviation as denominator) with corresponding small sample bias adjustment for both. Both effects were very strongly correlated with no obvious systematic bias between estimates (SEE PLOT). 
+
+
 
 # Results
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
 
 
+targets::tar_load(
+  c(
+    strength_model,
+    hypertrophy_model,
+    models_plot,
+    rho_assumptions_data,
+    rho_assumptions_data_plot,
+    pre_post_rho_checks
+  )
+)
+
+diff_rho_model <- pre_post_rho_checks[1]
 
 
+```
 
-and the meta-analytically estimated (using a similar multilevel model structure as noted above) values of $\rho_{Pre:Post}$ are in line with the values of $\rho_{Pre:Post}$ (Strength Outcomes: Intervention groups ρ_(Pre:Post)=0.500 [95%CI:0.365, 0.614], Control groups ρ_(Pre:Post)=0.867 [95%CI:0.705, 0.943]; Hypertrophy Outcomes: Intervention groups ρ_(Pre:Post)=0.827 [95%CI:0.762, 0.875], Control groups ρ_(Pre:Post)=0.965 [95%CI:0.900, 0.988]).
+For strength outcomes the between condition contrast (control minus intervention) is `r round(strength_model$b[3],2)` [95%CI: `r round(strength_model$ci.lb[3],2)`, `r round(strength_model$ci.ub[3],3)`] and for hypertrophy outcomes is `r round(hypertrophy_model$b[3],2)` [95%CI: `r round(hypertrophy_model$ci.lb[3],2)`, `r round(hypertrophy_model$ci.ub[3],2)`]. The meta-analytic scatter plot of  $\text{ln}(\hat{\sigma}_{ijk}))$ regressed upon $\text{ln}(\hat{\mu}_{ijk}))$ for each model can be seen in @fig-results
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-results
+#| fig-width: 10
+#| fig-height: 5
+#| fig-cap: Meta-analytic scatter plot of the log mean and log standard deviation of post-intervention scores for strength (left panel) outcomes and hypertrophy outcomes (right panel). Note, fitted lines are the regression slopes for control group (CON) and resistance training intervention (RT) groups each with their 95% confidence interval band and individual points are scaled in size to their inverse sampling variance.
+
+models_plot
+
+```
+
+The distribution of assumed values of $\rho_{Int:Con}$ can be seen in @fig-assumed-rho, meta-analytic estimates of the difference in $\rho_{Pre:Post}$ between intervention and controls were $z=$ `r round(pre_post_rho_checks[[1]]$b[2],2)` [95%CI: `r round(pre_post_rho_checks[[1]]$ci.lb[2],2)`, `r round(pre_post_rho_checks[[1]]$ci.ub[2],2)`] and for hypertrophy outcomes is $z=$ `r round(pre_post_rho_checks[[1]]$b[1],2)` [95%CI: `r round(pre_post_rho_checks[[1]]$ci.lb[1],2)`, `r round(pre_post_rho_checks[[1]]$ci.ub[1],2)`]. For strength outcomes the estimated $\rho_{Pre:Post_{Int}}$ was $r=$ `r round(pre_post_rho_checks[[2]][2,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][2,4],2)`, `r round(pre_post_rho_checks[[2]][2,4],2)`] and $\rho_{Pre:Post_{Con}}$ was $r=$ `r round(pre_post_rho_checks[[2]][4,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][4,4],2)`, `r round(pre_post_rho_checks[[2]][4,4],2)`]. For hypertrophy outcomes the estimated $\rho_{Pre:Post_{Int}}$ was $r=$ `r round(pre_post_rho_checks[[2]][1,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][1,4],2)`, `r round(pre_post_rho_checks[[2]][1,4],2)`] and $\rho_{Pre:Post_{Con}}$ was $r=$ `r round(pre_post_rho_checks[[2]][3,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][3,4],2)`, `r round(pre_post_rho_checks[[2]][3,4],2)`].
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-assumed-rho
+#| fig-width: 10
+#| fig-height: 5
+#| fig-cap: Histogram of the assumed values of $\rho_{Int:Con}$ for each variance contrast in the dataset.
+
+rho_assumptions_data_plot
+
+```
+
+# Discussion and Conclusion
+The results of this meta-analysis reveal that differences in variances between controls and interventions are at best very small, if anything tend towards a reduction in variance in interventions compared with controls, and are thus likely not meaningful. The assumptions inherent in this variance comparison appear to be justifiable to support the conclusion that there is not meaningful interindividual intervention effect heterogeneity. 
+
+The small difference in variance in the intervention arms compared to control in means adjusted variance comparisons is of little practical relevance as Mills et al. (2021) have noted given that this would occur under homogeneous treatment effects assuming that the intervention itself changes the mean. Alternatively it may be due to ceiling effects upon change constraining outcomes particularly given that for strength and hypertrophy effects rapidly begin to plateau after beginning an intervention as they are approximately logarithmic with duration of exposure (Steele et al., 2023; Roberts et al., 2026). Or it may be that there are indirect effects of the intervention that serve to reduce other sources of random variation such as diet or other physical activity during participation in a resistance training intervention (Halliday et al., 2017).  
+
+RCTs allow us to make causal inferences about average intervention effects and, as explained, under certain contexts and assumptions (i.e., inert control, assumed value of $\rho_{Int:Con}$) we can also make inferences about the variance of intervention effects. A number of methods exist to do this in the context of RCTs – though with effective interventions we need to account for the average intervention effects (i.e., mean-variance relationship) – but single trials are typically underpowered/imprecise and thus meta-analytic methods are useful. We can’t avoid having to make some assumptions – that’s just how scientific inference works – but the assumptions of the variance comparisons presented seem justifiable and, making those assumptions, this large scale meta-analysis provides little evidence for there being meaningful intervention effect heterogeneity for resistance training which is also in line with the aforementioned work utilising randomised replicated crossover design to fully partition variance components from Robinson et al. (2025).
+

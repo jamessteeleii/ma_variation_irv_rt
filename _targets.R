@@ -112,6 +112,11 @@ list(
   tar_target(
     rho_assumptions_data_plot,
     plot_rho_assumptions_data(rho_assumptions_data)
+  ),
+  
+  tar_target(
+    pre_post_rho_checks,
+    get_pre_post_rho(data)
   )
   
   
