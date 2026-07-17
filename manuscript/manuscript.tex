@@ -94,6 +94,39 @@
 \makeatother
 
 
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 
 
 
@@ -162,7 +195,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={Little evidence for meaningful intervention effect heterogeneity in resistance training: Evidence from causal inference framing and meta-analytic variance comparisons},
+  pdftitle={Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons in a large dataset of randomised controlled trials},
   pdfauthor={James Steele},
   pdfkeywords={resistance training, heterogeneity, individual
 response, causal inference, meta-analysis},
@@ -174,13 +207,15 @@ response, causal inference, meta-analysis},
   pdfcreator={LaTeX via pandoc}}
 
 
-\title{Little evidence for meaningful intervention effect heterogeneity
-in resistance training: Evidence from causal inference framing and
-meta-analytic variance comparisons\thanks{Preprint, please cite as:
-Steele, J. (2026). Little evidence for meaningful intervention effect
-heterogeneity in resistance training: Evidence from causal inference and
-meta-analytic variance comparisons. sportrxiv DOI:
-\url{https://doi.org/10.51224/SportRxiv.783}. Address for
+\title{Little evidence for meaningful additive intervention effect
+heterogeneity of resistance training upon strength and hypertrophy:
+Evidence from causal inference and meta-analytic variance comparisons in
+a large dataset of randomised controlled trials\thanks{Preprint, please
+cite as: Steele, J. (2026). Little evidence for meaningful additive
+intervention effect heterogeneity of resistance training upon strength
+and hypertrophy: Evidence from causal inference and meta-analytic
+variance comparisons. sportrxiv DOI:
+\url{https://doi.org/10.51224/SportRxiv.984}. Address for
 correspondence: james@steele-research.com}}
 
 
@@ -196,40 +231,47 @@ Institute of Technology, Melbourne, VIC, Australia}
 \def\KeywordList{resistance training, heterogeneity, individual
 response, causal inference, meta-analysis}
 
-\date{July 16, 2026}
+\date{July 17, 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
 Resistance training studies consistently demonstrate substantial
-variation in observed outcomes between participants. This variation is
-commonly interpreted as evidence that individuals differ meaningfully in
-their responses to training interventions. However, observed variation
-in outcomes does not necessarily imply heterogeneity in the underlying
-causal effects of an intervention. Rather, observed outcomes reflect
-multiple sources of variation, including between-participant
-differences, within-participant variability, measurement error, and
-potentially true intervention effect heterogeneity. Within the potential
-outcomes framework, heterogeneity of intervention effects is
-fundamentally a question about the variance of causal effects. Although
-directly estimating this variance generally requires specialised study
-designs such as randomised replicated crossover trials, traditional
-randomised controlled trials (RCTs) comparing an intervention against an
-inert control can provide indirect evidence regarding intervention
-effect heterogeneity through comparisons of outcome variances. Here, I
-outline the causal framework underpinning variance comparisons, discuss
-the assumptions required for causal interpretation, and demonstrate how
+variation in observed outcomes after interventions between participants.
+This variation is commonly interpreted as evidence that individuals
+differ meaningfully in their responses to resistance training
+interventions. However, observed variation in outcomes does not
+necessarily imply heterogeneity in the underlying causal effects of an
+intervention. Rather, observed outcomes reflect multiple sources of
+variation, including between-participant differences, within-participant
+variability, measurement error, and potentially true intervention effect
+heterogeneity. Within the potential outcomes framework, heterogeneity of
+intervention effects is fundamentally a question about the variance of
+causal effects. Although directly estimating this variance generally
+requires specialised study designs such as randomised replicated
+crossover trials, traditional randomised controlled trials (RCTs)
+comparing an intervention against an inert control can provide indirect
+evidence regarding intervention effect heterogeneity through comparisons
+of outcome variances. Here, I outline the causal framework underpinning
+variance comparisons under additive intervention effects, discuss the
+assumptions required for causal interpretation, and demonstrate how
 meta-analytic models can synthesise evidence across studies to compare
 variances while accounting for the ubiquitous relationship between means
-and variances. Applying these methods to a large meta-analytic dataset
-of RCTs of resistance training interventions reveals little evidence
-that interventions meaningfully increase outcome variability beyond that
-expected from the increase in mean outcomes themselves. Although
-conclusions necessarily depend upon assumptions regarding the
-correlation between potential outcomes, these assumptions appear
-empirically reasonable for resistance training studies in healthy
-participants. Taken together, current evidence provides little support
-for the existence of substantial intervention effect heterogeneity in
-resistance training adaptations.
+and variances. Applying these methods to a large (102 studies, 292 arms,
+3784 participants) meta-analytic dataset of RCTs of resistance training
+interventions reveals little evidence that interventions meaningfully
+increase outcome variability beyond that expected from the increase in
+mean outcomes themselves. Although the conclusions drawn necessarily
+depend upon assumptions regarding additivity of intervention effects,
+that controls are inert, and the correlation between potential outcomes,
+these assumptions appear reasonable for resistance training studies in
+healthy participants. Taken together, current evidence provides little
+support for the existence of substantial intervention effect
+heterogeneity in resistance training adaptations. As such,
+recommendations, policies, and guidelines for resistance training
+interventions can be simplified and it can be justifiably assumed that
+the average intervention effects estimated in adequately powered and
+precise RCTs are constant and experienced by all undergoing the
+intervention.
 \end{abstract}
 
 
@@ -238,41 +280,54 @@ resistance training adaptations.
 Variation in responses to resistance training has become a topic of
 considerable interest within sport and exercise science. Large
 differences are routinely observed between participants following
-apparently identical training programmes for the outcomes captured, and
-these differences are frequently interpreted as evidence that
-individuals differ meaningfully in their responsiveness to training.
-Such interpretations underpin discussions of ``responders'' and
-``non-responders'', personalised exercise prescription, and the search
-for biological determinants of intervention responsiveness. However,
-most people working on this topic confuse the observed variation in
-\emph{outcomes} with there necessarily being heterogeneity in the
-\emph{underlying effect of an intervention}. This typically has involved
-merely considering the distribution of outcomes observed in the
-intervention arms of trials which is insufficient for determining
-whether such variance is due to the effects of the intervention
-themselves varying between individuals. But, careful consideration of
-the underlying causal structure of the question of intervention effect
-heterogeneity allows us to better evaluate whether there is or is not
-evidence suggesting it is present.
+apparently identical training programmes for outcomes captured such as
+strength and hypertrophy, and these differences are frequently
+interpreted as evidence that individuals differ meaningfully in their
+responsiveness to training. Such interpretations underpin discussions of
+``responders'' and ``non-responders'', personalised exercise
+prescription, and the search for biological determinants of intervention
+responsiveness. However, most people working on this topic confuse the
+observed variation in \emph{outcomes} with there necessarily being
+heterogeneity in the \emph{underlying effect of an intervention}. This
+typically has involved merely considering the distribution of outcomes,
+usually either absolute (i.e., \(y_{i_{post}}-y_{i_{pre}}\)) or relative
+(i.e., \((y_{i_{post}}-y_{i_{pre}})/y_{i_{pre}}\)) change scores,
+observed in the intervention arms of trials which is insufficient for
+determining whether such variance is due to the effects of the
+intervention themselves varying between individuals. But, careful
+consideration of the underlying causal structure of the question of
+intervention effect heterogeneity allows us to better evaluate whether
+there is or is not evidence suggesting it is present.
 
-Partitioning of variance components of observed outcomes such that we
-can draw inferences regarding the presence (or not) of heterogeneity in
-the underlying causal effect of treatment is incredibly difficult.
-Typically, study designs such as those used by Robinson et al.~(2025)
-(i.e., randomised replicated crossovers) are required. But, in the
-context of a traditional randomised controlled trial (RCT) where the
-control can be reasonably assumed to be inert (i.e., has no effect
-itself), such as a non-training control in studies of healthy
-untrained\footnote{Untrained participants given in a trained population
-  we might expect \emph{a priori} that a detraining effect may occur
-  after cessation of their training. In the case of trained
-  participants, as others have argued (Hammert et al.~2024),
+Traditional pre and post test randomised controlled trial (RCT) designs,
+where participants undergo one and only one of a number of
+interventions, are used to test/estimate whether an intervention has
+some effect and what the average intervention effect is, typically
+assuming additivity of the intervention effect (i.e., that the
+intervention effect merely adds to, or subtracts from, the baseline
+outcome and is constant across participants). But, whilst RCTs of this
+kind and the inferences drawn from them operate under these assumptions,
+it may be the case that the intervention effect differs between
+participants. Partitioning of variance components of observed outcomes
+such that we can draw inferences regarding the presence (or not) of
+heterogeneity in the underlying causal effect of intervention is
+incredibly difficult. Typically, study designs such as those used by
+Robinson et al. (2025) (i.e., randomised replicated crossovers) are
+required where it is possible to determine whether the individual
+participant level causal effect is replicable. But, in the context of a
+traditional RCT where the control can be reasonably assumed to be inert
+(i.e., has no effect itself), such as a non-training control in studies
+of healthy untrained\footnote{Untrained participants given in a trained
+  population we might expect \emph{a priori} that a detraining effect
+  may occur after cessation of their training. In the case of trained
+  participants, as others have argued (Hammert et al., 2024),
   continuation of existing training may be a better control condition
   and indeed especially so when participants are already sufficiently
   trained (i.e., having trained consistently and using known effective
-  interventions for at least one full year; Steele et al., 2023; Roberts
-  et al., 2026) such that they are no longer experiencing meaningful
-  intervention effects anyway.} participants, we can obtain some insight
+  interventions for at least one full year; Steele, Fisher, et al.
+  (2023); Roberts et al. (2026)) such that they are no longer
+  experiencing meaningful intervention effects from participation in
+  current training anyway.} participants, we can obtain some insight
 into whether interindividual heterogeneity in intervention effects may
 be present.
 
@@ -282,7 +337,7 @@ be present.
 
 \raisebox{-\height}{
 
-\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Intervention}]{images/Slide4.png}
+\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Intervention}]{presentation_slides/Slide4.png}
 
 }
 
@@ -293,7 +348,7 @@ be present.
 
 \raisebox{-\height}{
 
-\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Confounders}]{images/Slide5.png}
+\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Confounders}]{presentation_slides/Slide5.png}
 
 }
 
@@ -304,7 +359,7 @@ be present.
 
 \raisebox{-\height}{
 
-\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Randomisation}]{images/Slide7.png}
+\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Randomisation}]{presentation_slides/Slide7.png}
 
 }
 
@@ -315,33 +370,35 @@ be present.
 
 \raisebox{-\height}{
 
-\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={No back-door pathway}]{images/Slide8.png}
+\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={No back-door pathway}]{presentation_slides/Slide8.png}
 
 }
 
 \subcaption{\label{}No back-door pathway}
 \end{minipage}%
 
-\caption{\label{fig-rct-logic}Logic of randomised controlled trial
+\caption{\label{fig-rct-logic}Logic of the randomised controlled trial
 design shown via directed acyclic graphs for estimating average
 intervention effects. In (a) we want to estimate the causal effect of an
-intervention upon some outcome, but as in (b) there are often
-confounders that influence whether the intervention is participated in
-and the outcome.As such, we randomise participants to receive the
-intervention (c) and now this means that we can obtain an unbiased
-estimate of the intervention effect because the only thing that causes
-participation in the intervention is randomisation (d) i.e., there is no
-``back-door'' causal pathway between the outcome and the intervention.}
+intervention upon some outcome (i.e., the arrow from intervention to
+outcome), but as in (b) there are often confounders that influence
+whether the intervention is participated in as well as the outcome. As
+such, we randomise participants to receive the intervention (c) and now
+this means that we can obtain an unbiased estimate of the intervention
+effect because the only thing that causes participation in the
+intervention is randomisation (d) i.e., there is no ``back-door'' causal
+pathway between the outcome and the intervention to introduce
+confounding.}
 
 \end{figure}%
 
-The logic of the RCT design (Figure~\ref{fig-rct-logic}), where possible
-confounders between intervention and outcome are removed through the
-process of randomisation, allows us to obtain an unbiased estimate of
-the clearly defined estimand that is the average intervention effect
-(Equation~\ref{eq-ate-estimand}) through comparison of the marginal
-distributions of outcomes between the conditions e.g., intervention vs
-control (Equation~\ref{eq-ate-estimate}).
+The logic of the RCT design (Figure~\ref{fig-rct-logic}, panel (a)),
+where possible confounders between intervention and outcome are removed
+through the process of randomisation, allows us to obtain an unbiased
+estimate of the clearly defined estimand that is the average
+intervention effect (Equation~\ref{eq-ate-estimand}) through comparison
+of the marginal distributions of outcomes between the conditions e.g.,
+intervention vs control (Equation~\ref{eq-ate-estimate}):
 
 \begin{equation}\protect\phantomsection\label{eq-ate-estimand}{
 \begin{gathered}
@@ -389,7 +446,7 @@ effect is estimated by \(\beta_1\).
 
 \raisebox{-\height}{
 
-\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Estimand and estimate}]{images/Slide14.png}
+\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Estimand and estimate}]{presentation_slides/Slide14.png}
 
 }
 
@@ -400,7 +457,7 @@ effect is estimated by \(\beta_1\).
 
 \raisebox{-\height}{
 
-\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Variance in outcomes observed}]{images/Slide16.png}
+\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Variance in outcomes observed}]{presentation_slides/Slide16.png}
 
 }
 
@@ -411,7 +468,7 @@ effect is estimated by \(\beta_1\).
 
 \raisebox{-\height}{
 
-\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Sources of variance in outcomes observed}]{images/var_comp.png}
+\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Sources of variance in outcomes observed}]{presentation_slides/var_comp.png}
 
 }
 
@@ -422,7 +479,7 @@ effect is estimated by \(\beta_1\).
 
 \raisebox{-\height}{
 
-\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Sources of variance in outcomes observed}]{images/Slide29.png}
+\includegraphics[width=\linewidth,height=8cm,keepaspectratio,alt={Sources of variance in outcomes observed}]{presentation_slides/Slide29.png}
 
 }
 
@@ -431,36 +488,39 @@ effect is estimated by \(\beta_1\).
 
 \caption{\label{fig-rct-logic}Mapping of estimand and estimate in the
 randomised controlled trial design for estimating average intervention
-effects alongside the directed acyclic graph. In (a) we have the defined
-estimand of the average treatment effect, our estimate based on the
-marginal distributions of interventions and controls (i.e., the causal
-arrow from intervention to outcome), and the standard deviation of
-treatment effects in addition to the general linear model estimator used
-to yield and estimate of this average treatment effect. The components
-of the general linear model are mapped to the their corresponding
-components in the causal structure including the observed outcomes
-\(y_i\), the randomly assigned intervention \(x_i\), and the estimated
-average causal effect of the intervention compared to the control
-\(\beta_1\). In (b), (c), and (d) it shows that some of the variance in
-observed outcomes i.e., \(\sigma\), may be due to intervention effect
-heterogeneity i.e., \(\sigma_{D}^2\) (the dashed arrow in (d) depicting
-interaction of the individual with the intervention), but that there are
-numerous other sources of variance and that these also differ between
-the intervention and control conditions.}
+effects alongside the directed acyclic graph (note, thin arrows from
+equations map to the elements of the directed acyclic graph (i.e., nodes
+or causal paths/arrows). In (a) we have the defined estimand of the
+average intervention effect, our estimate based on the marginal
+distributions of interventions and controls (i.e., the causal path/arrow
+from intervention to outcome), and the standard deviation of
+intervention effects in addition to the general linear model estimator
+used to yield an estimate of this average intervention effect. The
+components of the general linear model are mapped to the their
+corresponding components in the causal structure including the observed
+outcomes \(y_i\), the randomly assigned intervention \(x_i\), and the
+estimated average causal effect of the intervention compared to the
+control \(\beta_1\). In (b), (c), and (d) it shows that some of the
+variance in observed outcomes i.e., \(\sigma\), may be due to
+intervention effect heterogeneity i.e., \(\sigma_{D}^2\) (the dashed
+arrow in (d) depicting interaction of the individual with the
+intervention), but that there are numerous other sources of variance and
+that these also differ between the intervention and control conditions.}
 
 \end{figure}%
 
 The question of whether an intervention has introduced variation, that
 is to say that there is some variation in the intervention effect and
 not merely a fixed effect amongst participants, is essentially a
-question of comparing variances in this type of study design i.e., an
-RCT. In the context of an RCT with an inert control the variance
-\(\sigma\) in observed outcomes \(y_i\) is due to between participant
-variation, within participant variation, and other sources of random
-error in the inert control condition, whereas in the intervention
-condition only will there potentially be the additional source of
-variation that is the interindividual variation of the intervention
-effect itself (i.e., \(\sigma_{D}^2\)).
+question of comparing variances in this type of study design
+(Figure~\ref{fig-rct-logic}, panels (b), (c), and (d)). In the context
+of an RCT with an inert control the variance \(\sigma\) in observed
+outcomes \(y_i\) is due to between participant variation, within
+participant variation, and other sources of random error in the inert
+control condition, whereas in the intervention condition only will there
+potentially be the additional source of variation that is the
+interindividual variation of the intervention effect itself (i.e.,
+\(\sigma_{D}^2\)).
 
 For RCTs it is a simple extension of the traditional general linear
 model to a so-called location-scale model in which variances are
@@ -481,56 +541,59 @@ variance.
 
 There are also various effect size statistics that can be calculated for
 the comparison of variances such as the standard deviation of individual
-responses (\(SD_{IR}\)) (Atkinson \& Batterham, 2015; Hopkins, 2015),
-the log ratio of standard deviations (\(\text{ln}VR\)) and the log
-coefficient of variation ratio (\(\text{ln}CVR\)) (Nakagawa et al.,
-2015; Senior et al., 2020), as well as various other statistical tests
-for the comparison of variances (Mills et al., 2021). These effect size
-statistics are particularly useful in the context of meta-analytic
-approaches for examining the presence (or not) of interindividual
-intervention effect heterogeneity. However, these effects sizes do come
-with inherent assumptions that need to be considered when drawing
-inferences about effect heterogeneity in randomised trials. These
-include strong assumptions about the correlation between potential
-outcomes (i.e., the value of the unobservable \(\rho_{Int:Con}\)) as
-well as assumptions about the relationship between means and variances
-(i.e., the \(SD_{IR}\) and \(\text{ln}VR\) assume the relationship to be
-zero, whilst the \(\text{ln}CVR\) assumes it to be proportional).
+responses (\(SD_{IR}\)) {[}Atkinson \& Batterham (2015);
+hopkinsIndividualResponsesMade2015{]}, the log ratio of standard
+deviations (\(\text{ln}VR\)) and the log coefficient of variation ratio
+(\(\text{ln}CVR\)) (Nakagawa et al., 2015; Senior et al., 2020), as well
+as various other statistical tests for the comparison of variances
+(Mills et al., 2021). These effect size statistics are particularly
+useful in the context of meta-analytic approaches for examining the
+presence (or not) of interindividual intervention effect heterogeneity.
+However, these effects sizes do come with inherent assumptions that need
+to be considered when drawing inferences about effect heterogeneity in
+randomised trials. These include strong assumptions about the
+correlation between potential outcomes (i.e., the value of the
+unobservable \(\rho_{Int:Con}\)) as well as assumptions about the
+relationship between means and variances (i.e., the \(SD_{IR}\) and
+\(\text{ln}VR\) assume the relationship to be zero, whilst the
+\(\text{ln}CVR\) assumes it to be proportional).
 
 The fact that \(\rho_{Int:Con}\) is not directly observable has been
 termed the fundamental problem of causal inference and is why in RCTs we
 focus upon the average intervention effect as the estimand of interest
-(because we can only observe a outcomes under a single condition per
+(because we can only observe outcomes under a single condition per
 individual participant and not their potential outcome in the unobserved
-condition). Caldwell et al.~(2025) show that the assumed value of the
+condition). Caldwell et al. (2025) show that the assumed value of the
 unobservable \(\rho_{Int:Con}\) in fact depends on the ratio between the
 observed standard deviations in the intervention and control conditions
-(see https://osf.io/d59ru/files/7f6sq).
+(see section 1 in
+\url{https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary}).
 
 The mean-variance relationship also is ubiquitous in most natural
 systems, and certainly in outcomes typical of resistance training
-studies (Nuzzo et al., 2024; Steele et al., 2023), largely due to errors
-being multiplicative i.e., increase as the mean increases. As such,
-given that in the context of a RCT of a resistance training intervention
-compared to an inert control we typically expect an increase in the mean
-of outcomes such as strength or hypertrophy (assuming the intervention
-is on average effective), any variance comparisons should account for
-this possible impact in order to differentiate this coupling of the
-parameters from the introduction of variance due to the intervention
-\emph{qua} intervention. For a single trial, either the location-scale
-model or use of the \(\text{ln}CVR\) is thus preferable.
+studies (Nuzzo et al., 2024; {Steele, et al.}, 2023), largely due to
+errors being multiplicative i.e., increase as the mean increases. As
+such, given that in the context of a RCT of a resistance training
+intervention compared to an inert control we typically expect an
+increase in the mean of outcomes such as strength or hypertrophy
+(assuming the intervention is on average effective), any variance
+comparisons should account for this possible impact in order to
+differentiate this coupling from the introduction of variance due to the
+intervention \emph{qua} intervention. For a single trial, either the
+location-scale model or use of the \(\text{ln}CVR\) is thus preferable.
 
-A further issue is that the typical RCT in resistance training is
+A further issue though is that the typical RCT in resistance training is
 woefully underpowered to detect what could be considered realistic
 variance ratios that we may want to detect between controls and
-interventions. For example, in their simulations Caldwell et al.~(2025)
+interventions. For example, in their simulations Caldwell et al. (2025)
 show that the typical study of n=20-30 participants may have
 \textless25\% power to detect these differences and thus the
 introduction of additional variance by the intervention. Thus,
 meta-analytic approaches are incredibly value for exploring this
 question, and with meta-analytic approaches we are also able to go one
 step farther and directly model the ratio of variances between
-interventions and controls whilst adjusting for the mean outcomes.
+interventions and controls whilst adjusting for the mean outcomes at the
+study/arm level.
 
 Considering the causal logic of the RCT, and the assumptions that need
 to be examined when making variance comparisons for the purpose of
@@ -539,31 +602,50 @@ re-examine the question of whether there is meaningful resistance
 training intervention effect heterogeneity. To do so I take a
 meta-analytic approach and use the large scale dataset of RCTs examining
 resistance training interventions compared with inert controls that we
-have previously presented (Steele et al., 2023).
+have previously presented ({Steele, et al.}, 2023).
 
 \section{Methods}\label{methods}
 
-All data, code, and materials for the present work are available at: ADD
-LINKS. All packages used for analysis are cited in the corresponding
-report generated by the grateful package.
+All data, code, and materials for the present work are available at
+\url{https://github.com/jamessteeleii/ma_variation_irv_rt}. All packages
+used for analysis are cited in the corresponding report generated by the
+grateful package which can be seen at
+\url{https://jamessteeleii.github.io/ma_variation_irv_rt/grateful-report.html}.
 
 \subsection{Dataset}\label{dataset}
 
-In Steele et al.~(2023) we utilised the studies previously
-systematically reviewed by Polito et al.~(2021) which were all RCTs of
+In Steele et al. (2023) we utilised the studies previously
+systematically reviewed by Polito et al. (2021) which were all RCTs of
 resistance training interventions compared to non-training controls
 where it could be expected that the control conditions were essentially
-inert. We re-extracted data from the studies they identified and full
-details of this dataset can be seen in Steele et al.~(2023) in addition
-to the data being openly available (INSERT LINKS). Here I limit the
-dataset to only studies of untrained participants (see footnote 1) and
-explore both the pooled strength and pooled hypertrophy outcomes.
+inert. As data were unavailable from Polito et al. (2021) we
+re-extracted data from the studies they identified and full details of
+this dataset can be seen in Steele et al. (2023) in addition to the
+extracted data being openly available
+(\url{https://github.com/jamessteeleii/Meta-Analysis-of-Variation-in-Resistance-Training/raw/refs/heads/main/data/Polito\%20et\%20al.\%20RT\%20Extracted\%20Data.csv}).
+Here I limit the dataset to only studies of untrained participants (see
+footnote\footnote{Untrained participants given in a trained population
+  we might expect \emph{a priori} that a detraining effect may occur
+  after cessation of their training. In the case of trained
+  participants, as others have argued (Hammert et al., 2024),
+  continuation of existing training may be a better control condition
+  and indeed especially so when participants are already sufficiently
+  trained (i.e., having trained consistently and using known effective
+  interventions for at least one full year; Steele, Fisher, et al.
+  (2023); Roberts et al. (2026)) such that they are no longer
+  experiencing meaningful intervention effects from participation in
+  current training anyway.}) and explore both the pooled strength and
+pooled hypertrophy outcomes which resulted in 102 studies, 292 arms (113
+control arms, 182 intervention arms), and 3784 participants (1353
+control participants, 2431 intervention participants) and a median study
+duration (i.e., intervention length) of 12 weeks (interquartile range =
+8, min = 2, max = 52).
 
 \subsection{Analysis}\label{analysis}
 
 An arm-based approach was taken using a multilevel meta-analytic model
 of the log transformed standard deviations for each outcome at
-post-intervention\footnote{Note, previously in Steele et al., (2023) we
+post-intervention\footnote{Note, previously in Steele et al. (2023) we
   contrasted the variance in change scores between intervention and
   controls. However, this required in many cases the calculation or
   imputation of estimated \(\rho_{Pre:Post}\) in order to calculate the
@@ -573,14 +655,14 @@ post-intervention\footnote{Note, previously in Steele et al., (2023) we
   an issue for approaches to adjust for mean-variance relationships as
   the coefficient of variation is undefined for zero as are log
   transformations. Finally, change scores for outcomes that are negative
-  require must be sign transformed and taken as absolute values under
-  the assumption that mean-variance relationships are typically
-  symmetric about zero so that absolute change scores are used. However,
-  in the context of a randomised controlled trial, due to randomisation
-  the post score contrast between intervention and control is an
-  unbiased estimator for the average intervention effect (i.e., the
-  mean) and also any variance contrast given that at post-intervention
-  the variance \(\sigma\) in observed outcomes \(y_i\) is due to between
+  must be sign transformed and taken as absolute values under the
+  assumption that mean-variance relationships are typically symmetric
+  about zero so that absolute change scores are used. However, in the
+  context of a randomised controlled trial, due to randomisation the
+  post score contrast between intervention and control is an unbiased
+  estimator for the average intervention effect (i.e., the mean) and
+  also any variance contrast given that at post-intervention the
+  variance \(\sigma\) in observed outcomes \(y_i\) is due to between
   participant variation, within participant variation, and other sources
   of random error in the inert control condition, whereas in the
   intervention condition only will there potentially be the additional
@@ -590,7 +672,10 @@ post-intervention\footnote{Note, previously in Steele et al., (2023) we
 the log transformed means for each outcome at post-intervention and the
 arm from which these variances came (i.e., intervention or control)
 allowing for comparison of variances between arms whilst adjusting for
-the population mean-variance relationship. The model was thus:
+the population mean-variance relationship which was evidently present in
+the current data (see section 2 in
+\url{https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary}).
+The model was thus:
 
 \begin{equation}\protect\phantomsection\label{eq-mean-var-meta}{
 \begin{aligned}
@@ -622,7 +707,8 @@ contrasts in the meta-analytic dataset and examine whether the empirical
 distribution of assumed values are a justifiable assumption to allow us
 to treat our variance comparisons as indicative of whether there is, or
 is not, any interindividual intervention effect heterogeneity (see
-https://osf.io/cg63r).
+section 3 in
+\url{https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary}).
 
 Typically, the marginal estimate
 \(\overline{D}=\overline{Y_{Post}}-\overline{Y_{Pre}}\) is not an
@@ -630,7 +716,7 @@ unbiased estimate of \(D=Y_{Int}-Y_{Con}\) and can be misleading
 regarding the presence, or not, of interindividual intervention effect
 heterogeneity\footnote{For example, this was incorrectly inferred based
   on variance in observed relative change scores in the now classic
-  paper from Hubal et al.~(2005) on this topic.}. However, in the case
+  paper from Hubal et al. (2005) on this topic.}. However, in the case
 of resistance training interventions in healthy participants with
 strength/hypertrophy outcomes it is in fact a relatively unbiased
 estimate of \(D\)\footnote{To check this assumption I compared across
@@ -643,8 +729,10 @@ estimate of \(D\)\footnote{To check this assumption I compared across
   the pre-intervention standard deviation as denominator) with
   corresponding small sample bias adjustment for both. Both effects were
   very strongly correlated with no obvious systematic bias between
-  estimates (SEE PLOT).}. As such, \(\rho_{Pre:Post}\) might be
-considered a reasonable estimate of \(\rho_{Int:Con}\).
+  estimates (see section 4 in
+  \url{https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary}).}.
+As such, \(\rho_{Pre:Post}\) might be considered a reasonable estimate
+of \(\rho_{Int:Con}\).
 
 However, variance comparison methods also assume that rank ordering of
 responses are similarly maintained in both intervention and control arms
@@ -699,69 +787,274 @@ their inverse sampling variance.}
 \end{figure}%
 
 The distribution of assumed values of \(\rho_{Int:Con}\) can be seen in
-Figure~\ref{fig-assumed-rho}, meta-analytic estimates of the difference
-in \(\rho_{Pre:Post}\) between intervention and controls were \(z=\)
--0.22 {[}95\%CI: -0.73, 0.29{]} and for hypertrophy outcomes is \(z=\)
--0.38 {[}95\%CI: -0.77, 0.01{]}. For strength outcomes the estimated
-\(\rho_{Pre:Post_{Int}}\) was \(r=\) 0.89 {[}95\%CI: 0.78, 0.78{]} and
-\(\rho_{Pre:Post_{Con}}\) was \(r=\) 0.9 {[}95\%CI: 0.67, 0.67{]}. For
-hypertrophy outcomes the estimated \(\rho_{Pre:Post_{Int}}\) was \(r=\)
-0.93 {[}95\%CI: 0.87, 0.87{]} and \(\rho_{Pre:Post_{Con}}\) was \(r=\)
-0.97 {[}95\%CI: 0.91, 0.91{]}.
+the online supplementary materials (see section 3 in
+\url{https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary}),
+but the highest probability density value was of the distribution of
+calculated values was 0.95 with a 95\% highest density interval of 0.39
+to 1. Meta-analytic estimates of the difference in \(\rho_{Pre:Post}\)
+between intervention and controls were \(z=\) -0.22 {[}95\%CI: -0.73,
+0.29{]} and for hypertrophy outcomes is \(z=\) -0.38 {[}95\%CI: -0.77,
+0.01{]}. For strength outcomes the estimated \(\rho_{Pre:Post_{Int}}\)
+was \(r=\) 0.89 {[}95\%CI: 0.78, 0.94{]} and \(\rho_{Pre:Post_{Con}}\)
+was \(r=\) 0.9 {[}95\%CI: 0.67, 0.67{]}. For hypertrophy outcomes the
+estimated \(\rho_{Pre:Post_{Int}}\) was \(r=\) 0.93 {[}95\%CI: 0.87,
+0.87{]} and \(\rho_{Pre:Post_{Con}}\) was \(r=\) 0.97 {[}95\%CI: 0.91,
+0.91{]}.
 
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{manuscript_files/figure-pdf/fig-assumed-rho-1.pdf}}
-
-}
-
-\caption{\label{fig-assumed-rho}Histogram of the assumed values of
-\(\rho_{Int:Con}\) for each variance contrast in the dataset.}
-
-\end{figure}%
-
-\section{Discussion and Conclusion}\label{discussion-and-conclusion}
+\section{Discussion}\label{discussion}
 
 The results of this meta-analysis reveal that differences in variances
 between controls and interventions are at best very small, if anything
-tend towards a reduction in variance in interventions compared with
+tend towards a reduction of variance in interventions compared with
 controls, and are thus likely not meaningful. The assumptions inherent
 in this variance comparison appear to be justifiable to support the
-conclusion that there is not meaningful interindividual intervention
-effect heterogeneity.
+conclusion that there is not meaningful interindividual additive
+intervention effect heterogeneity for resistance training upon strength
+or hypertrophy.
 
 The small difference in variance in the intervention arms compared to
 control in means adjusted variance comparisons is of little practical
-relevance as Mills et al.~(2021) have noted given that this would occur
-under homogeneous treatment effects assuming that the intervention
-itself changes the mean. Alternatively it may be due to ceiling effects
-upon change constraining outcomes particularly given that for strength
-and hypertrophy effects rapidly begin to plateau after beginning an
-intervention as they are approximately logarithmic with duration of
-exposure (Steele et al., 2023; Roberts et al., 2026). Or it may be that
-there are indirect effects of the intervention that serve to reduce
-other sources of random variation such as diet or other physical
-activity during participation in a resistance training intervention
-(Halliday et al., 2017).
+relevance, as Mills et al. (2021) have noted, given that this would
+occur under homogeneous intervention effects assuming that the
+intervention itself changes the mean. Alternatively it may be that there
+are indirect effects of the intervention that serve to reduce other
+sources of random variation by unintentionally imposing additional
+control of behaviours or influencing them spontaneously e.g., diet or
+other physical activity changes during participation in a resistance
+training intervention (e.g., Halliday et al. (2017)). Another
+possibility is that it may be due to ceiling effects constraining
+outcomes particularly given that, for strength and hypertrophy, effects
+begin to plateau around one year after beginning an intervention as they
+are approximately logarithmic with duration of exposure (Roberts et al.,
+2026; Steele, Fisher, et al., 2023). However, we limited the studies
+included to those with only untrained participants and the vast majority
+of studies were \textless12 weeks in duration where effects are still
+approximately linear with duration of exposure.
+
+One assumption inherent to the analysis and results presented is that of
+additive intervention effects (i.e., that the underlying causal effect
+of the intervention merely adds or subtracts to the baseline score; Senn
+(2004); Cortés et al. (2018)). However, it is a fact that the choice of
+scale can impact the appearance of interindividual intervention effect
+heterogeneity; assuming baseline variance in outcomes a homogeneous
+additive effect necessarily implies a heterogeneous effect on the
+multiplicative scale, and vice versa. If it is assumed that effects are
+instead multiplicative (i.e., that the underlying causal effect of the
+intervention is some multiple of the baseline score) then for the
+individual level RCT where participant level data are available
+transformations such as the natural logarithm can me made to
+test/estimate the presence and magnitude of multiplicative effects (Liu
+\& Maxwell, 2020). However, given we cannot directly observe the
+underlying causal effects of a given intervention it is impossible for
+us to know whether or not the effects are truly additive or
+multiplicative. Choice of whether to assume one or the other therefore
+has to be taken as a theoretically motivated auxiliary assumption that
+requires justification. This is not easy to accomplish as, even though
+the effects of an intervention such as resistance training appear to
+follow a logarithmic function over duration of exposure when said
+exposure is sufficiently long (Roberts et al., 2026; Steele, Fisher, et
+al., 2023), whether or not this functional form arises due to truly
+multiplicative effects (i.e., effects are always a fixed proportion
+between individuals of their outcome at baseline prior to exposure such
+that as one continues to get stronger/bigger with exposure the absolute
+effects become smaller and smaller) or additive effects (i.e., effects
+are always a fixed addition between individuals to their outcome at
+baseline prior to exposure but that the magnitude of these absolute
+effects are conditional upon prior exposure, not baseline value, and as
+such absolute effects become smaller and smaller) is typically
+impossible to distinguish between. Further, in the meta-analytic case as
+presented here, given summary level data is almost always presented only
+as arithmetic as opposed to geometric means and standard deviations,
+there is no immediately available approach to examining the
+multiplicative effect scale without individual participant level data
+for all included trials. As such, I follow Senn's (2004) suggestion here
+that, given there is little that can be done, additivity is an
+assumption that we can make and not worry about.
+
+\section{Conclusion}\label{conclusion}
 
 RCTs allow us to make causal inferences about average intervention
 effects and, as explained, under certain contexts and assumptions (i.e.,
-inert control, assumed value of \(\rho_{Int:Con}\)) we can also make
-inferences about the variance of intervention effects. A number of
-methods exist to do this in the context of RCTs -- though with effective
-interventions we need to account for the average intervention effects
-(i.e., mean-variance relationship) -- but single trials are typically
-underpowered/imprecise and thus meta-analytic methods are useful. We
-can't avoid having to make some assumptions -- that's just how
-scientific inference works -- but the assumptions of the variance
+additivity, inert control, assumed value of \(\rho_{Int:Con}\)) we can
+also make inferences about the variance of intervention effects. A
+number of methods exist to do this in the context of RCTs -- though with
+effective interventions we need to account for the average intervention
+effects (i.e., mean-variance relationship) -- but single trials are
+typically underpowered/imprecise and thus meta-analytic methods are
+useful. We can't avoid having to make some assumptions -- that's just
+how scientific inference works -- but the assumptions of the variance
 comparisons presented seem justifiable and, making those assumptions,
 this large scale meta-analysis provides little evidence for there being
 meaningful intervention effect heterogeneity for resistance training
 which is also in line with the aforementioned work utilising randomised
 replicated crossover design to fully partition variance components from
-Robinson et al.~(2025).
+Robinson et al. (2025). As such, recommendations, policies, and
+guidelines for resistance training interventions can be simplified and
+it can be assumed that the average intervention effects estimated in
+adequately powered and precise trials are constant and experienced by
+all undergoing the intervention. For example, muscle strengthening
+interventions such as resistance training are recommended for everyone
+in current physical activity guidelines and for populations such as
+athletes where there is likely value in a simple approach to such
+recommendations assuming constant intervention effects.
+
+\section{Acknowledgements}\label{acknowledgements}
+
+I would like to thank Dr Zac Robinson for his continued discussion of
+this topic and thoughtful input to my own thinking which has shaped this
+work.
+
+\section{Funding Information}\label{funding-information}
+
+No direct funding was received for this work.
+
+\section{Competing Interests}\label{competing-interests}
+
+JS provides research consultancy through his company Steele Research
+Limited, is contracted currently by MacroFactor and Kieser Australia
+through Steele Research Limited, and has also received travel expenses
+and honoraria for speaking from fit20 International, Exercise School
+Portugal, and Discover Strength.
+
+The content does not necessarily represent the official views of the
+affiliations or contracting organisations listed.
+
+\section{Data and Supplementary Material
+Accessibility}\label{data-and-supplementary-material-accessibility}
+
+All data and code utilised for data preparation and analyses are
+available in the corresponding GitHub repository
+\url{https://github.com/jamessteeleii/ma_variation_irv_rt}.
+
+\section{References}\label{references}
+
+\protect\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-atkinsonTrueFalseInterindividual2015}
+Atkinson, G., \& Batterham, A. M. (2015). True and false interindividual
+differences in the physiological response to an intervention.
+\emph{Experimental Physiology}, \emph{100}(6), 577--588.
+\url{https://doi.org/10.1113/EP085070}
+
+\bibitem[\citeproctext]{ref-caldwellConcernsRegardingStandard2025}
+Caldwell, A. R., Allison, D. B., Brown, A. W., Gadbury, G. L., Mokalla,
+T. R., Sayer, R. D., \& Vigotsky, A. D. (2025). Concerns regarding the
+standard deviation of individual responses for assessing treatment
+response heterogeneity. \emph{Journal of Applied Physiology},
+\emph{139}(5), 1220--1227.
+\url{https://doi.org/10.1152/japplphysiol.00485.2025}
+
+\bibitem[\citeproctext]{ref-cortesDoesEvidenceSupport2018}
+Cortés, J., González, J. A., Medina, M. N., Vogler, M., Vilaró, M.,
+Elmore, M., Senn, S. J., Campbell, M., \& Cobo, E. (2018). Does evidence
+support the high expectations placed in precision medicine? {A}
+bibliographic review. \emph{F1000Research}, \emph{7}, 30.
+\url{https://doi.org/10.12688/f1000research.13490.5}
+
+\bibitem[\citeproctext]{ref-hallidayResistanceTrainingAssociated2017}
+Halliday, T. M., Savla, J., Marinik, E. L., Hedrick, V. E., Winett, R.
+A., \& Davy, B. M. (2017). Resistance training is associated with
+spontaneous changes in aerobic physical activity but not overall diet
+quality in adults with prediabetes. \emph{Physiology \& Behavior},
+\emph{177}, 49--56. \url{https://doi.org/10.1016/j.physbeh.2017.04.013}
+
+\bibitem[\citeproctext]{ref-hammertMethodologicalConsiderationsWhen2024}
+Hammert, W. B., Dankel, S. J., Kataoka, R., Yamada, Y., Kassiano, W.,
+Song, J. S., \& Loenneke, J. P. (2024). Methodological {Considerations
+When Studying Resistance-Trained Populations}: {Ideas} for {Using
+Control Groups}. \emph{Journal of Strength and Conditioning Research},
+\emph{38}(12), 2164--2171.
+\url{https://doi.org/10.1519/JSC.0000000000004978}
+
+\bibitem[\citeproctext]{ref-hubalVariabilityMuscleSize2005}
+Hubal, M. J., Gordish-Dressman, H., Thompson, P. D., Price, T. B.,
+Hoffman, E. P., Angelopoulos, T. J., Gordon, P. M., Moyna, N. M.,
+Pescatello, L. S., Visich, P. S., Zoeller, R. F., Seip, R. L., \&
+Clarkson, P. M. (2005).
+\href{https://www.ncbi.nlm.nih.gov/pubmed/15947721}{Variability in
+muscle size and strength gain after unilateral resistance training}.
+\emph{Medicine and Science in Sports and Exercise}, \emph{37}(6),
+964--972.
+
+\bibitem[\citeproctext]{ref-liuMultiplicativeTreatmentEffects2020}
+Liu, Q., \& Maxwell, S. E. (2020). Multiplicative treatment effects in
+randomized pretest-posttest experimental designs. \emph{Psychological
+Methods}, \emph{25}(1), 71--87. \url{https://doi.org/10.1037/met0000222}
+
+\bibitem[\citeproctext]{ref-millsDetectingHeterogeneityIntervention2021}
+Mills, H. L., Higgins, J. P. T., Morris, R. W., Kessler, D., Heron, J.,
+Wiles, N., Davey Smith, G., \& Tilling, K. (2021). Detecting
+{Heterogeneity} of {Intervention Effects Using Analysis} and
+{Meta-analysis} of {Differences} in {Variance Between Trial Arms}.
+\emph{Epidemiology (Cambridge, Mass.)}, \emph{32}(6), 846--854.
+\url{https://doi.org/10.1097/EDE.0000000000001401}
+
+\bibitem[\citeproctext]{ref-nakagawaMetaanalysisVariationEcological2015}
+Nakagawa, S., Poulin, R., Mengersen, K., Reinhold, K., Engqvist, L.,
+Lagisz, M., \& Senior, A. M. (2015). Meta-analysis of variation:
+Ecological and evolutionary applications and beyond. \emph{Methods in
+Ecology and Evolution}, \emph{6}(2), 143--152.
+\url{https://doi.org/10.1111/2041-210X.12309}
+
+\bibitem[\citeproctext]{ref-nuzzoMaximalNumberRepetitions2024}
+Nuzzo, J. L., Pinto, M. D., Nosaka, K., \& Steele, J. (2024). Maximal
+{Number} of {Repetitions} at {Percentages} of the {One Repetition
+Maximum}: {A Meta-Regression} and {Moderator Analysis} of {Sex}, {Age},
+{Training Status}, and {Exercise}. \emph{Sports Medicine}, \emph{54}(2),
+303--321. \url{https://doi.org/10.1007/s40279-023-01937-7}
+
+\bibitem[\citeproctext]{ref-politoModeratorsStrengthGains2021}
+Polito, M. D., Papst, R. R., \& Farinatti, P. (2021). Moderators of
+strength gains and hypertrophy in resistance training: {A} systematic
+review and meta-analysis. \emph{Journal of Sports Sciences},
+\emph{39}(19), 2189--2198.
+\url{https://doi.org/10.1080/02640414.2021.1924978}
+
+\bibitem[\citeproctext]{ref-robertsModelingTrajectorySkeletal2026}
+Roberts, B. M., Robinson, Z., Pearson, J., Lawson, D., Remmert, J.,
+Scheller, C., Haun, C., Moore, S., Barakat, C., Almos, A., Chatham, S.,
+Sousa, C., Schoenfeld, B., Smith-Ryan, A., Trexler, E., Tinsley, G.,
+Souza, E. D., \& Siedler, M. (2026). \emph{Modeling the {Trajectory} of
+{Skeletal Muscle Hypertrophy During Resistance Training}: {A Systematic
+Review} and {Meta-Analysis}}. SportRxiv.
+\url{https://doi.org/10.51224/SportRxiv.910}
+
+\bibitem[\citeproctext]{ref-robinsonEffectResistanceTraining2025}
+Robinson, Z. P., Steele, J., Helms, E. R., Trexler, E. T., Hall, M. E.,
+Huang, C.-J., Pelland, J. C., Remmert, J. F., Hinson, S. R., Mikula, S.
+A., Hamaïde, A. A., \& Zourdos, M. C. (2025). \emph{The {Effect} of
+{Resistance Training Volume} on {Individual-Level Skeletal Muscle
+Adaptations}: {A Novel Replicated Within-Participant Unilateral Trial}}
+(p. 2025.07.24.666533). bioRxiv.
+\url{https://doi.org/10.1101/2025.07.24.666533}
+
+\bibitem[\citeproctext]{ref-seniorRevisitingExpandingMetaanalysis2020}
+Senior, A. M., Viechtbauer, W., \& Nakagawa, S. (2020). Revisiting and
+expanding the meta-analysis of variation: {The} log coefficient of
+variation ratio. \emph{Research Synthesis Methods}, \emph{11}(4),
+553--567. \url{https://doi.org/10.1002/jrsm.1423}
+
+\bibitem[\citeproctext]{ref-sennControversiesConcerningRandomization2004}
+Senn, S. (2004). Controversies concerning randomization and additivity
+in clinical trials. \emph{Statistics in Medicine}, \emph{23}(24),
+3729--3753. \url{https://doi.org/10.1002/sim.2074}
+
+\bibitem[\citeproctext]{ref-steeleLongTermTimeCourseStrength2023a}
+Steele, J., Fisher, J. P., Giessing, J., Androulakis-Korakakis, P.,
+Wolf, M., Kroeske, B., \& Reuters, R. (2023). Long-{Term Time-Course} of
+{Strength Adaptation} to {Minimal Dose Resistance Training Through
+Retrospective Longitudinal Growth Modeling}. \emph{Research Quarterly
+for Exercise and Sport}, \emph{94}(4), 913--930.
+\url{https://doi.org/10.1080/02701367.2022.2070592}
+
+\bibitem[\citeproctext]{ref-steeleMetaanalysisVariationSport2023a}
+{Steele, J., Fisher, Smith, Schoenfeld, Yang, \& and Nakagawa, S.}
+(2023). Meta-analysis of variation in sport and exercise science:
+{Examples} of application within resistance training research.
+\emph{Journal of Sports Sciences}, \emph{41}(17), 1617--1634.
+\url{https://doi.org/10.1080/02640414.2023.2286748}
+
+\end{CSLReferences}
 
 
 

@@ -40,9 +40,9 @@ affiliations:
       - id: 3
         name: School of Health and Biomedical Sciences, Royal Melbourne Institute of Technology, Melbourne, VIC, Australia
 abstract: |
-  Resistance training studies consistently demonstrate substantial variation in observed outcomes after interventions between participants. This variation is commonly interpreted as evidence that individuals differ meaningfully in their responses to resistance training interventions. However, observed variation in outcomes does not necessarily imply heterogeneity in the underlying causal effects of an intervention. Rather, observed outcomes reflect multiple sources of variation, including between-participant differences, within-participant variability, measurement error, and potentially true intervention effect heterogeneity. Within the potential outcomes framework, heterogeneity of intervention effects is fundamentally a question about the variance of causal effects. Although directly estimating this variance generally requires specialised study designs such as randomised replicated crossover trials, traditional randomised controlled trials (RCTs) comparing an intervention against an inert control can provide indirect evidence regarding intervention effect heterogeneity through comparisons of outcome variances. Here, I outline the causal framework underpinning variance comparisons under additive intervention effects, discuss the assumptions required for causal interpretation, and demonstrate how meta-analytic models can synthesise evidence across studies to compare variances while accounting for the ubiquitous relationship between means and variances. Applying these methods to a large (102 studies, ) meta-analytic dataset of RCTs of resistance training interventions reveals little evidence that interventions meaningfully increase outcome variability beyond that expected from the increase in mean outcomes themselves. Although the conclusions drawn necessarily depend upon assumptions regarding additivity of intervention effects, that controls are inert, and the correlation between potential outcomes, these assumptions appear reasonable for resistance training studies in healthy participants. Taken together, current evidence provides little support for the existence of substantial intervention effect heterogeneity in resistance training adaptations. As such, recommendations, policies, and guidelines for resistance training interventions can be simplified and it can be justifiably assumed that the average intervention effects estimated in adequately powered and precise RCTs are constant and experienced by all undergoing the intervention.
+  Resistance training studies consistently demonstrate substantial variation in observed outcomes after interventions between participants. This variation is commonly interpreted as evidence that individuals differ meaningfully in their responses to resistance training interventions. However, observed variation in outcomes does not necessarily imply heterogeneity in the underlying causal effects of an intervention. Rather, observed outcomes reflect multiple sources of variation, including between-participant differences, within-participant variability, measurement error, and potentially true intervention effect heterogeneity. Within the potential outcomes framework, heterogeneity of intervention effects is fundamentally a question about the variance of causal effects. Although directly estimating this variance generally requires specialised study designs such as randomised replicated crossover trials, traditional randomised controlled trials (RCTs) comparing an intervention against an inert control can provide indirect evidence regarding intervention effect heterogeneity through comparisons of outcome variances. Here, I outline the causal framework underpinning variance comparisons under additive intervention effects, discuss the assumptions required for causal interpretation, and demonstrate how meta-analytic models can synthesise evidence across studies to compare variances while accounting for the ubiquitous relationship between means and variances. Applying these methods to a large (102 studies, 292 arms, 3784 participants) meta-analytic dataset of RCTs of resistance training interventions reveals little evidence that interventions meaningfully increase outcome variability beyond that expected from the increase in mean outcomes themselves. Although the conclusions drawn necessarily depend upon assumptions regarding additivity of intervention effects, that controls are inert, and the correlation between potential outcomes, these assumptions appear reasonable for resistance training studies in healthy participants. Taken together, current evidence provides little support for the existence of substantial intervention effect heterogeneity in resistance training adaptations. As such, recommendations, policies, and guidelines for resistance training interventions can be simplified and it can be justifiably assumed that the average intervention effects estimated in adequately powered and precise RCTs are constant and experienced by all undergoing the intervention.
 thanks: |
-  Preprint, please cite as: Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.????](https://doi.org/10.51224/SportRxiv.????). Address for correspondence: james@steele-research.com
+  Preprint, please cite as: Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.984](https://doi.org/10.51224/SportRxiv.984). Address for correspondence: james@steele-research.com
 keywords: [resistance training, heterogeneity, individual response, causal inference, meta-analysis] # optional
 bibliography: references.bib
 csl: apa.csl
@@ -59,6 +59,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align="center")
 options(knitr.kable.NA = '')
 
 library(tidyverse)
+library(bayestestR)
 
 ```
 
@@ -213,7 +214,7 @@ sample_sizes <- data_prepared |>
 
 ```
 
-In Steele et al. [-@steeleMetaanalysisVariationSport2023a] we utilised the studies previously systematically reviewed by Polito et al. [-@politoModeratorsStrengthGains2021] which were all RCTs of resistance training interventions compared to non-training controls where it could be expected that the control conditions were essentially inert. As data were unavailable from Polito et al. [-@politoModeratorsStrengthGains2021] we re-extracted data from the studies they identified and full details of this dataset can be seen in Steele et al. [-@steeleMetaanalysisVariationSport2023a] in addition to the extracted data being openly available ([https://github.com/jamessteeleii/Meta-Analysis-of-Variation-in-Resistance-Training/raw/refs/heads/main/data/Polito%20et%20al.%20RT%20Extracted%20Data.csv](https://github.com/jamessteeleii/Meta-Analysis-of-Variation-in-Resistance-Training/raw/refs/heads/main/data/Polito%20et%20al.%20RT%20Extracted%20Data.csv)). Here I limit the dataset to only studies of untrained participants (see footnote[^1]) and explore both the pooled strength and pooled hypertrophy outcomes which resulted in `r length(unique(data_prepared$study)` studies, `r length(unique(data_prepared$arm)` arms (`r groups$n[1]` control arms, `r groups$n[2]` intervention arms), and `r sum(sample_sizes$n)` participants (`r sample_sizes$n[1]` control participants, `r sample_sizes$n[2]` intervention participants) and a median study duration (i.e., intervention length) of `r durations$median` weeks (interquartile range = `r durations$iqr`, min = `r durations$min`, max = `r durations$max`).
+In Steele et al. [-@steeleMetaanalysisVariationSport2023a] we utilised the studies previously systematically reviewed by Polito et al. [-@politoModeratorsStrengthGains2021] which were all RCTs of resistance training interventions compared to non-training controls where it could be expected that the control conditions were essentially inert. As data were unavailable from Polito et al. [-@politoModeratorsStrengthGains2021] we re-extracted data from the studies they identified and full details of this dataset can be seen in Steele et al. [-@steeleMetaanalysisVariationSport2023a] in addition to the extracted data being openly available ([https://github.com/jamessteeleii/Meta-Analysis-of-Variation-in-Resistance-Training/raw/refs/heads/main/data/Polito%20et%20al.%20RT%20Extracted%20Data.csv](https://github.com/jamessteeleii/Meta-Analysis-of-Variation-in-Resistance-Training/raw/refs/heads/main/data/Polito%20et%20al.%20RT%20Extracted%20Data.csv)). Here I limit the dataset to only studies of untrained participants (see footnote[^1]) and explore both the pooled strength and pooled hypertrophy outcomes which resulted in `r length(unique(data_prepared$study))` studies, `r length(unique(data_prepared$arm))` arms (`r groups$n[1]` control arms, `r groups$n[2]` intervention arms), and `r sum(sample_sizes$n)` participants (`r sample_sizes$n[1]` control participants, `r sample_sizes$n[2]` intervention participants) and a median study duration (i.e., intervention length) of `r durations$median` weeks (interquartile range = `r durations$iqr`, min = `r durations$min`, max = `r durations$max`).
 
 ## Analysis
 An arm-based approach was taken using a multilevel meta-analytic model of the log transformed standard deviations for each outcome at post-intervention[^2] regressed upon the log transformed means for each outcome at post-intervention and the arm from which these variances came (i.e., intervention or control) allowing for comparison of variances between arms whilst adjusting for the population mean-variance relationship which was evidently present in the current data (see section 2 in [https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary](https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary)). The model was thus: 
@@ -259,13 +260,11 @@ targets::tar_load(
     hypertrophy_model,
     models_plot,
     rho_assumptions_data,
-    rho_assumptions_data_plot,
     pre_post_rho_checks
   )
 )
 
 diff_rho_model <- pre_post_rho_checks[1]
-
 
 ```
 
@@ -284,20 +283,7 @@ models_plot
 
 ```
 
-The distribution of assumed values of $\rho_{Int:Con}$ can be seen in @fig-assumed-rho, meta-analytic estimates of the difference in $\rho_{Pre:Post}$ between intervention and controls were $z=$ `r round(pre_post_rho_checks[[1]]$b[2],2)` [95%CI: `r round(pre_post_rho_checks[[1]]$ci.lb[2],2)`, `r round(pre_post_rho_checks[[1]]$ci.ub[2],2)`] and for hypertrophy outcomes is $z=$ `r round(pre_post_rho_checks[[1]]$b[1],2)` [95%CI: `r round(pre_post_rho_checks[[1]]$ci.lb[1],2)`, `r round(pre_post_rho_checks[[1]]$ci.ub[1],2)`]. For strength outcomes the estimated $\rho_{Pre:Post_{Int}}$ was $r=$ `r round(pre_post_rho_checks[[2]][2,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][2,4],2)`, `r round(pre_post_rho_checks[[2]][2,4],2)`] and $\rho_{Pre:Post_{Con}}$ was $r=$ `r round(pre_post_rho_checks[[2]][4,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][4,4],2)`, `r round(pre_post_rho_checks[[2]][4,4],2)`]. For hypertrophy outcomes the estimated $\rho_{Pre:Post_{Int}}$ was $r=$ `r round(pre_post_rho_checks[[2]][1,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][1,4],2)`, `r round(pre_post_rho_checks[[2]][1,4],2)`] and $\rho_{Pre:Post_{Con}}$ was $r=$ `r round(pre_post_rho_checks[[2]][3,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][3,4],2)`, `r round(pre_post_rho_checks[[2]][3,4],2)`].
-
-```{r}
-#| message: false
-#| warning: false
-#| echo: false
-#| label: fig-assumed-rho
-#| fig-width: 10
-#| fig-height: 5
-#| fig-cap: Histogram of the assumed values of $\rho_{Int:Con}$ for each variance contrast in the dataset.
-
-rho_assumptions_data_plot
-
-```
+The distribution of assumed values of $\rho_{Int:Con}$ can be seen in the online supplementary materials (see section 3 in [https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary](https://jamessteeleii.github.io/ma_variation_irv_rt/manuscript/supplementary)), but the highest probability density value was of the distribution of calculated values was `r round(map_estimate(rho_assumptions_data$sdir_rho_xy)$MAP_Estimate,2)` with a 95% highest density interval of `r round(hdi(rho_assumptions_data$sdir_rho_xy)$CI_low,2)` to `r round(hdi(rho_assumptions_data$sdir_rho_xy)$CI_high,2)`. Meta-analytic estimates of the difference in $\rho_{Pre:Post}$ between intervention and controls were $z=$ `r round(pre_post_rho_checks[[1]]$b[2],2)` [95%CI: `r round(pre_post_rho_checks[[1]]$ci.lb[2],2)`, `r round(pre_post_rho_checks[[1]]$ci.ub[2],2)`] and for hypertrophy outcomes is $z=$ `r round(pre_post_rho_checks[[1]]$b[1],2)` [95%CI: `r round(pre_post_rho_checks[[1]]$ci.lb[1],2)`, `r round(pre_post_rho_checks[[1]]$ci.ub[1],2)`]. For strength outcomes the estimated $\rho_{Pre:Post_{Int}}$ was $r=$ `r round(pre_post_rho_checks[[2]][2,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][2,4],2)`, `r round(pre_post_rho_checks[[2]][2,5],2)`] and $\rho_{Pre:Post_{Con}}$ was $r=$ `r round(pre_post_rho_checks[[2]][4,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][4,4],2)`, `r round(pre_post_rho_checks[[2]][4,4],2)`]. For hypertrophy outcomes the estimated $\rho_{Pre:Post_{Int}}$ was $r=$ `r round(pre_post_rho_checks[[2]][1,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][1,4],2)`, `r round(pre_post_rho_checks[[2]][1,4],2)`] and $\rho_{Pre:Post_{Con}}$ was $r=$ `r round(pre_post_rho_checks[[2]][3,3],2)` [95%CI: `r round(pre_post_rho_checks[[2]][3,4],2)`, `r round(pre_post_rho_checks[[2]][3,4],2)`].
 
 # Discussion
 The results of this meta-analysis reveal that differences in variances between controls and interventions are at best very small, if anything tend towards a reduction of variance in interventions compared with controls, and are thus likely not meaningful. The assumptions inherent in this variance comparison appear to be justifiable to support the conclusion that there is not meaningful interindividual additive intervention effect heterogeneity for resistance training upon strength or hypertrophy. 
@@ -309,3 +295,22 @@ One assumption inherent to the analysis and results presented is that of additiv
 # Conclusion
 RCTs allow us to make causal inferences about average intervention effects and, as explained, under certain contexts and assumptions (i.e., additivity, inert control, assumed value of $\rho_{Int:Con}$) we can also make inferences about the variance of intervention effects. A number of methods exist to do this in the context of RCTs – though with effective interventions we need to account for the average intervention effects (i.e., mean-variance relationship) – but single trials are typically underpowered/imprecise and thus meta-analytic methods are useful. We can’t avoid having to make some assumptions – that’s just how scientific inference works – but the assumptions of the variance comparisons presented seem justifiable and, making those assumptions, this large scale meta-analysis provides little evidence for there being meaningful intervention effect heterogeneity for resistance training which is also in line with the aforementioned work utilising randomised replicated crossover design to fully partition variance components from Robinson et al. [-@robinsonEffectResistanceTraining2025]. As such, recommendations, policies, and guidelines for resistance training interventions can be simplified and it can be assumed that the average intervention effects estimated in adequately powered and precise trials are constant and experienced by all undergoing the intervention. For example, muscle strengthening interventions such as resistance training are recommended for everyone in current physical activity guidelines and for populations such as athletes where there is likely value in a simple approach to such recommendations assuming constant intervention effects.
 
+# Acknowledgements
+
+I would like to thank Dr Zac Robinson for his continued discussion of this topic and thoughtful input to my own thinking which has shaped this work.
+
+# Funding Information
+
+No direct funding was received for this work.
+
+# Competing Interests
+
+JS provides research consultancy through his company Steele Research Limited, is contracted currently by MacroFactor and Kieser Australia through Steele Research Limited, and has also received travel expenses and honoraria for speaking from fit20 International, Exercise School Portugal, and Discover Strength.
+
+The content does not necessarily represent the official views of the affiliations or contracting organisations listed. 
+
+# Data and Supplementary Material Accessibility
+
+All data and code utilised for data preparation and analyses are available in the corresponding GitHub repository <https://github.com/jamessteeleii/ma_variation_irv_rt>.
+
+# References

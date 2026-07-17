@@ -38,7 +38,7 @@ library(tidyverse)
 
 This supplementary material accompanies the preprint: 
 
-> Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons in a large dataset of randomised controlled trials. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.????](https://doi.org/10.51224/SportRxiv.????). Address for correspondence: james@steele-research.com
+> Steele, J. (2026). Little evidence for meaningful additive intervention effect heterogeneity of resistance training upon strength and hypertrophy: Evidence from causal inference and meta-analytic variance comparisons in a large dataset of randomised controlled trials. sportrxiv DOI: [https://doi.org/10.51224/SportRxiv.984](https://doi.org/10.51224/SportRxiv.984). Address for correspondence: james@steele-research.com
 
 # Assumed values of $\rho_{Int:Con}$ for a given variance ratio
 As shown by Caldwell et al. [-@caldwellConcernsRegardingStandard2025], the assumed value of $\rho_{Int:Con}$ is dependent upon the ratio between the observed standard deviations in the intervention and control conditions in any variance comparisons performed. This is visualised in @fig-assumed-rho.
